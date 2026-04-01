@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Product — Priyaraa</title>
+<link rel="stylesheet" href="style.css"/>
+<style>
+.prod-wrap{display:grid;grid-template-columns:1fr 1fr;gap:5rem;padding:5rem 3rem 3rem;align-items:start;}
+.breadcrumb{padding:1.5rem 3rem 0;font-family:'Caveat',cursive;font-size:14px;color:var(--muted);display:flex;gap:6px;align-items:center;}
+.bc-sep{opacity:.4;}
+.img-col{position:sticky;top:80px;}
+.main-img{width:100%;aspect-ratio:1;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:80px;border:1px solid var(--sand);background:var(--rosebg);margin-bottom:10px;}
+.img-row{display:flex;gap:8px;}
+.img-thumb{width:64px;height:64px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;border:1.5px solid var(--sand);cursor:pointer;background:white;transition:border-color .2s;}
+.img-thumb:hover,.img-thumb.active{border-color:var(--rose);}
+.prod-badge{font-family:'Caveat',cursive;font-size:13px;background:var(--rosebg);color:var(--rose);padding:3px 14px;border-radius:100px;border:1px solid var(--rose2);display:inline-block;margin-bottom:.8rem;}
+.prod-title{font-family:'Instrument Serif',serif;font-size:clamp(26px,3.5vw,38px);line-height:1.1;letter-spacing:-.5px;margin-bottom:.6rem;}
+.prod-seller{display:flex;align-items:center;gap:8px;margin-bottom:.8rem;font-size:13px;color:var(--muted);}
+.ps-av{width:28px;height:28px;border-radius:50%;background:var(--rosebg);display:flex;align-items:center;justify-content:center;font-size:13px;}
+.ps-link{color:var(--rose);text-decoration:none;font-family:'Caveat',cursive;font-size:15px;}
+.rating{display:flex;align-items:center;gap:8px;margin-bottom:1rem;}
+.stars{color:#F4B942;font-size:15px;}
+.rating-n{font-family:'Caveat',cursive;font-size:14px;color:var(--muted);}
+.prod-price{font-family:'Instrument Serif',serif;font-size:2.5rem;color:var(--rose);margin-bottom:3px;}
+.price-note{font-family:'Caveat',cursive;font-size:14px;color:var(--muted);margin-bottom:1.5rem;}
+.prod-desc{font-size:14px;line-height:1.9;color:var(--muted);font-weight:300;margin-bottom:1.8rem;padding-bottom:1.5rem;border-bottom:1px solid var(--sand);}
+.custom-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;display:block;}
+.color-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.4rem;}
+.cdot{width:30px;height:30px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:all .2s;box-shadow:0 0 0 2px transparent;}
+.cdot.active{box-shadow:0 0 0 2.5px var(--rose);}
+.size-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.4rem;}
+.sz{padding:8px 18px;border:1.5px solid var(--sand);border-radius:100px;font-size:12px;cursor:pointer;background:white;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.sz.active,.sz:hover{border-color:var(--rose);color:var(--rose);background:var(--rosebg);}
+.cinput{width:100%;font-family:'DM Sans',sans-serif;font-size:13px;padding:11px 16px;border:1.5px solid var(--sand);border-radius:12px;background:white;color:var(--ink);outline:none;margin-bottom:1rem;transition:border-color .2s;}
+.cinput:focus{border-color:var(--rose);}
+.cinput::placeholder{color:#c0b0a0;}
+.cart-btn{width:100%;padding:15px;border-radius:100px;background:var(--ink);color:var(--cream);font-size:15px;font-weight:500;border:none;cursor:pointer;margin-bottom:10px;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.cart-btn:hover{background:var(--rose);}
+.cart-btn:disabled{opacity:.6;}
+.cart-success{display:none;background:#EAF3DE;border:1px solid #9FE1CB;border-radius:12px;padding:.8rem 1.2rem;margin-bottom:1rem;font-size:13px;color:#2d6b1a;font-family:'Caveat',cursive;font-size:15px;}
+.msg-btn{width:100%;padding:13px;border-radius:100px;border:1.5px solid var(--sand);background:white;font-size:13px;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;margin-bottom:1.2rem;}
+.msg-btn:hover{border-color:var(--rose);color:var(--rose);}
+.trust-row{display:flex;gap:1rem;flex-wrap:wrap;font-family:'Caveat',cursive;font-size:13px;color:var(--muted);}
+.rv-sec{padding:0 3rem 4rem;}
+.rv{background:white;border:1px solid var(--sand);border-radius:14px;padding:1.2rem;margin-bottom:.8rem;}
+.rv-top{display:flex;align-items:center;gap:10px;margin-bottom:.5rem;}
+.rv-av{width:32px;height:32px;border-radius:50%;background:var(--rosebg);display:flex;align-items:center;justify-content:center;font-size:14px;}
+.rv-name{font-weight:500;font-size:13px;flex:1;}
+.rv-stars{color:#F4B942;font-size:12px;}
+.rv-text{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300;}
+@media(max-width:768px){.prod-wrap{grid-template-columns:1fr;padding:4rem 1.5rem 2rem;gap:2rem;}.img-col{position:static;}.breadcrumb{padding:1.5rem 1.5rem 0;}.rv-sec{padding:0 1.5rem 2rem;}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Priy<em>araa</em></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Discover</a></li>
+    <li><a href="reels.html">Reels</a></li>
+    <li><a href="giftbot.html">🎁 Sona</a></li>
+    <li><a href="chat.html">Messages</a></li>
+  </ul>
+  <div class="nav-btns" id="nav-btns"><a href="login.html" class="btn btn-outline btn-sm">Login</a><a href="login.html" class="btn btn-dark btn-sm">Join free</a></div>
+</nav>
+
+<div class="breadcrumb"><a href="index.html">Home</a><span class="bc-sep">/</span><a id="bc-cat" href="index.html">Handmade</a><span class="bc-sep">/</span><span id="bc-title">Product</span></div>
+
+<div class="prod-wrap">
+  <div class="img-col">
+    <div class="main-img" id="main-img">🎁</div>
+    <div class="img-row">
+      <div class="img-thumb active" id="th1">🎁</div>
+      <div class="img-thumb">📦</div>
+      <div class="img-thumb">✨</div>
+    </div>
+  </div>
+  <div>
+    <div class="prod-badge" id="p-badge">✦ Handmade · Customizable</div>
+    <h1 class="prod-title" id="p-title">Loading...</h1>
+    <div class="prod-seller">
+      <div class="ps-av" id="ps-av">🌸</div>
+      by <a id="ps-name" class="ps-link" href="#">Artisan</a>
+      &nbsp;·&nbsp;
+      <span style="color:#F4B942;font-size:13px;" id="ps-rating">★ 4.9</span>
+    </div>
+    <div class="rating">
+      <span class="stars" id="stars">★★★★★</span>
+      <span class="rating-n">(284 reviews)</span>
+    </div>
+    <div class="prod-price" id="p-price">₹—</div>
+    <div class="price-note">~ free customization · ships in 3-5 days</div>
+    <p class="prod-desc" id="p-desc">Loading...</p>
+
+    <div id="colors-wrap" style="display:none">
+      <span class="custom-label">Choose color</span>
+      <div class="color-row" id="color-row"></div>
+    </div>
+    <div id="sizes-wrap" style="display:none">
+      <span class="custom-label">Choose size</span>
+      <div class="size-row" id="size-row"></div>
+    </div>
+    <span class="custom-label">Add a name or message</span>
+    <input class="cinput" id="cname" placeholder="e.g. 'For Aanya' · 'Happy Birthday Priya'">
+    <span class="custom-label">Any special note for the artisan?</span>
+    <input class="cinput" id="cnote" placeholder="e.g. 'Please use pastel tones only'">
+
+    <div class="cart-success" id="cart-ok">🌸 Order placed! The artisan has been notified and will message you soon.</div>
+    <button class="cart-btn" id="cart-btn" onclick="placeOrder()">Add to Cart</button>
+    <button class="msg-btn" onclick="msgSeller()">💬 Message the Artisan</button>
+    <div class="trust-row">
+      <span>✅ Verified seller</span><span>·</span><span>🔒 Secure payment</span>
+      <span>·</span><span>📦 Handcrafted to order</span><span>·</span><span>🔄 Easy returns</span>
+    </div>
+  </div>
+</div>
+
+<div class="rv-sec">
+  <div class="sec-ey">~ what buyers say</div>
+  <div id="rvs">
+    <div class="rv"><div class="rv-top"><div class="rv-av">👩</div><div class="rv-name">Ananya R.</div><div class="rv-stars">★★★★★</div></div><div class="rv-text">"She cried when she saw it. The name embroidery was so perfect. Meera understood exactly what I wanted." 😭</div></div>
+    <div class="rv"><div class="rv-top"><div class="rv-av">👨</div><div class="rv-name">Rohan D.</div><div class="rv-stars">★★★★★</div></div><div class="rv-text">"Ordered for my mom's birthday. Quality exceeded expectations and it arrived with a handwritten note from the maker."</div></div>
+  </div>
+</div>
+
+<footer class="footer">
+  <a href="index.html" class="footer-logo">Priy<em>araa</em></a>
+  <ul class="footer-links"><li><a href="index.html">Home</a></li><li><a href="login.html">Sign up</a></li></ul>
+  <div class="footer-copy">~ made just for you</div>
+</footer>
+
+
+<script>
+const pid=new URLSearchParams(window.location.search).get('id')||1;
+let product=null,selColor='',selSize='';
+
+async function load(){
+  const res=await PriyaraaAPI.products.get(pid);
+  if(!res.success)return;
+  product=res.product;
+  document.title=product.title+' — Priyaraa';
+  document.getElementById('bc-title').textContent=product.title;
+  document.getElementById('p-title').textContent=product.title;
+  document.getElementById('p-price').textContent='₹'+product.price.toLocaleString();
+  document.getElementById('p-desc').textContent=product.description||'Handcrafted with love and attention to detail.';
+  document.getElementById('cart-btn').textContent='Add to Cart — ₹'+product.price.toLocaleString();
+  document.getElementById('main-img').textContent=product.emoji||'🎁';
+  document.getElementById('main-img').style.background=product.thumb_bg||'var(--rosebg)';
+  document.getElementById('th1').textContent=product.emoji||'🎁';
+  if(product.seller_name){
+    document.getElementById('ps-name').textContent=product.seller_name;
+    document.getElementById('ps-name').href='seller.html?id='+product.seller_id;
+  }
+  if(product.seller_avatar)document.getElementById('ps-av').textContent=product.seller_avatar;
+  if(product.rating)document.getElementById('ps-rating').textContent='★ '+product.rating.toFixed(1);
+
+  let opts=product.custom_options;
+  if(typeof opts==='string')try{opts=JSON.parse(opts);}catch(e){}
+  if(opts&&opts.colors){
+    document.getElementById('colors-wrap').style.display='block';
+    const cmap={'Dusty Rose':'#e8b4c0','Sage Green':'#9fbc7a','Peach':'#f5b896','Sky Blue':'#87bedb','Lavender':'#c4b0e0','Natural':'#d4c4a0','White':'#f8f5f0','Beige':'#e8dcc8','Multicolor':'linear-gradient(135deg,#f5b896,#87bedb)'};
+    document.getElementById('color-row').innerHTML=opts.colors.map((c,i)=>
+      `<div class="cdot ${i===0?'active':''}" style="background:${cmap[c]||'#e0d0c0'}" title="${c}" onclick="selC('${c}',this)"></div>`).join('');
+    selColor=opts.colors[0];
+  }
+  if(opts&&opts.sizes){
+    document.getElementById('sizes-wrap').style.display='block';
+    document.getElementById('size-row').innerHTML=opts.sizes.map((s,i)=>
+      `<div class="sz ${i===0?'active':''}" onclick="selS('${s}',this)">${s}</div>`).join('');
+    selSize=opts.sizes[0];
+  }
+  if(res.reviews&&res.reviews.length){
+    document.getElementById('rvs').innerHTML=res.reviews.map(r=>
+      `<div class="rv"><div class="rv-top"><div class="rv-av">${r.buyer_avatar||'👤'}</div><div class="rv-name">${r.buyer_name}</div><div class="rv-stars">${'★'.repeat(r.rating)}</div></div><div class="rv-text">"${r.comment||''}"</div></div>`).join('');
+  }
+}
+
+function selC(c,el){selColor=c;document.querySelectorAll('.cdot').forEach(d=>d.classList.remove('active'));el.classList.add('active');}
+function selS(s,el){selSize=s;document.querySelectorAll('.sz').forEach(b=>b.classList.remove('active'));el.classList.add('active');}
+
+async function placeOrder(){
+  if(!Auth.isLoggedIn()){showToast('Please login to order','error');setTimeout(()=>window.location.href='login.html',1000);return;}
+  const btn=document.getElementById('cart-btn');
+  btn.textContent='Placing order...';btn.disabled=true;
+  const res=await PriyaraaAPI.orders.place({product_id:parseInt(pid),custom_name:document.getElementById('cname').value,custom_note:document.getElementById('cnote').value,custom_color:selColor,custom_size:selSize});
+  btn.disabled=false;
+  if(res.success){
+    btn.textContent='✅ Order Placed!';
+    document.getElementById('cart-ok').style.display='block';
+    showToast('Order placed! Artisan notified 🌸');
+    setTimeout(()=>{btn.textContent='Add to Cart — ₹'+product.price.toLocaleString();document.getElementById('cart-ok').style.display='none';},4000);
+  }else{btn.textContent='Add to Cart — ₹'+product.price.toLocaleString();showToast(res.message||'Order failed','error');}
+}
+function msgSeller(){
+  if(!Auth.isLoggedIn()){showToast('Please login first','error');setTimeout(()=>window.location.href='login.html',1000);return;}
+  window.location.href='chat.html';
+}
+load();updateNav();
+</script>
+
+<!-- THEME SWITCHER -->
+<div class="theme-switcher">
+  <div class="theme-palette" id="palette">
+    <div class="palette-opt active" data-theme="light" onclick="setTheme('light')">
+      <div class="palette-dot" style="background:#C2607E;border:2px solid #FBF7F0;box-shadow:0 0 0 1px #C2607E;"></div>Rose Light
+    </div>
+    <div class="palette-opt" data-theme="dark" onclick="setTheme('dark')">
+      <div class="palette-dot" style="background:#e8849e;border:2px solid #0f0d0b;"></div>Rose Dark
+    </div>
+    <div class="palette-opt" data-theme="green" onclick="setTheme('green')">
+      <div class="palette-dot" style="background:#4a8c5c;border:2px solid #f4faf6;"></div>Sage Light
+    </div>
+    <div class="palette-opt" data-theme="dark-green" onclick="setTheme('dark-green')">
+      <div class="palette-dot" style="background:#6abf80;border:2px solid #080f0a;"></div>Forest Dark
+    </div>
+  </div>
+  <div class="theme-toggle-btn" id="theme-toggle" onclick="togglePalette()">🎨</div>
+</div>
+<script src="/api.js"></script>
+<script>
+
+// ── THEME SWITCHER ──
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme',t);
+  localStorage.setItem('priyaraa_theme',t);
+  document.querySelectorAll('.palette-opt').forEach(o=>o.classList.toggle('active',o.getAttribute('data-theme')===t));
+}
+function togglePalette(){document.getElementById('palette').classList.toggle('open');}
+document.addEventListener('click',e=>{if(!e.target.closest('.theme-switcher'))document.getElementById('palette')?.classList.remove('open');});
+(function(){const t=localStorage.getItem('priyaraa_theme');if(t)setTheme(t);})();
+
+// ── NAV: show logged-in user ──
+(function(){
+  const user=Auth.user();
+  const btns=document.querySelector('.nav-btns');
+  if(btns&&user){
+    btns.innerHTML=`<span style="font-family:'Caveat',cursive;font-size:15px;color:var(--muted);">~ ${user.name.split(' ')[0]}</span>
+      <div style="width:32px;height:32px;border-radius:50%;background:var(--rosebg);border:1.5px solid var(--rose2);display:flex;align-items:center;justify-content:center;font-size:15px;">${user.avatar||'🌸'}</div>
+      <button onclick="Auth.logout()" class="btn btn-ghost btn-sm">logout</button>`;
+  }
+})();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<svg width="240" height="64" viewBox="0 0 240 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- P letter with needle eye -->
+  <text x="0" y="48" font-family="'Georgia', serif" font-size="44" font-style="italic" font-weight="400" fill="#C2607E" letter-spacing="-1">P</text>
+  <!-- Needle threading through P -->
+  <line x1="22" y1="14" x2="22" y2="52" stroke="#C2607E" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+  <!-- Thread curving out -->
+  <path d="M22 14 C26 8 32 10 28 18 C24 22 30 20 34 16" stroke="#C2607E" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.5"/>
+  <!-- Brand name -->
+  <text x="34" y="46" font-family="'Georgia', serif" font-size="36" font-style="italic" font-weight="400" fill="#1a1208" letter-spacing="-0.5">riyaraa</text>
+  <!-- Small heart/star accent -->
+  <path d="M228 10 C228 8 226 8 226 10 C226 12 228 13 228 13 C228 13 230 12 230 10 C230 8 228 8 228 10Z" fill="#C2607E" opacity="0.7"/>
+  <!-- Tagline -->
+  <text x="34" y="60" font-family="'Georgia', serif" font-size="9" fill="#7a6a58" letter-spacing="1.5" font-style="italic">handmade with heart</text>
+</svg>

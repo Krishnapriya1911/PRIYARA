@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Priyaraa ✦ handmade hits different</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital,wght@0,400;1,400&family=Caveat:wght@400;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css"/>
+<style>
+/* ── PAGE SPECIFIC ── */
+
+/* HERO */
+.hero{
+  min-height:100vh;display:flex;align-items:center;
+  padding:80px 3rem 60px;position:relative;overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;z-index:0;
+  background:radial-gradient(ellipse 70% 70% at 65% 45%, var(--rosebg) 0%, var(--bg) 60%);
+  transition:background .4s;
+}
+/* Scattered doodle layer */
+.doodle-layer{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+
+.hero-inner{
+  max-width:1200px;margin:0 auto;width:100%;
+  display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;
+  position:relative;z-index:2;
+}
+
+/* LEFT */
+.hero-ey{
+  font-family:'Caveat',cursive;font-size:17px;color:var(--rose);
+  margin-bottom:.9rem;display:flex;align-items:center;gap:8px;
+}
+.hero-ey::before{content:'';width:22px;height:1.5px;background:var(--rose);}
+.hero-h1{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(3rem,6.5vw,5.2rem);
+  line-height:.94;letter-spacing:-3px;
+  color:var(--text);margin-bottom:2rem;
+  position:relative;z-index:2;
+}
+.hero-h1 .italic{font-style:italic;color:var(--rose);}
+.hero-h1 .underlined{position:relative;display:inline-block;}
+.hero-h1 .underlined svg{
+  position:absolute;left:-3px;bottom:-10px;width:108%;
+}
+.hero-desc{
+  font-size:15px;line-height:1.85;color:var(--muted);
+  font-weight:300;max-width:400px;margin-bottom:2rem;
+  font-style:italic;
+}
+.hero-desc strong{font-weight:500;color:var(--text);font-style:normal;}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:2rem;}
+
+/* Stats row */
+.hero-stats{
+  display:flex;gap:2.5rem;padding-top:1.5rem;
+  border-top:1px solid var(--border);
+}
+.hs{display:flex;flex-direction:column;}
+.hs-val{font-family:'Instrument Serif',serif;font-size:1.8rem;color:var(--text);line-height:1;}
+.hs-label{font-family:'Caveat',cursive;font-size:13px;color:var(--muted);margin-top:3px;}
+
+/* Gen Z badge strip */
+.genz-strip{
+  display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.5rem;
+}
+.gz{
+  font-family:'Caveat',cursive;font-size:13px;
+  padding:4px 13px;border-radius:100px;
+  background:var(--pill-bg);color:var(--rose);
+  border:1px solid var(--rose2);
+}
+
+/* RIGHT — floating card cluster */
+.hero-right{position:relative;height:520px;}
+
+/* Main product card */
+.hero-main-card{
+  position:absolute;top:50%;left:50%;transform:translate(-45%,-50%);
+  width:210px;background:var(--card-bg);border:1px solid var(--border);
+  border-radius:22px;
+  box-shadow:0 24px 60px rgba(194,96,126,.12),0 8px 20px rgba(0,0,0,.06);
+  overflow:hidden;transition:transform .3s;z-index:3;
+}
+.hero-main-card:hover{transform:translate(-45%,-52%) rotate(-1deg);}
+.hmc-thumb{
+  height:180px;display:flex;align-items:center;justify-content:center;
+  font-size:56px;background:linear-gradient(135deg,var(--rosebg),#FAEEDA);
+}
+.hmc-body{padding:.9rem 1.1rem;}
+.hmc-tag{
+  font-size:10px;font-weight:600;color:var(--rose);
+  letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;
+}
+.hmc-title{font-family:'Instrument Serif',serif;font-size:1rem;color:var(--text);margin-bottom:4px;}
+.hmc-price{font-family:'Caveat',cursive;font-size:15px;color:var(--rose);}
+
+/* Secondary cards */
+.hero-card-sm{
+  position:absolute;width:160px;background:var(--card-bg);
+  border:1px solid var(--border);border-radius:16px;overflow:hidden;
+  box-shadow:0 8px 24px rgba(0,0,0,.08);
+}
+.hero-card-sm:nth-child(2){top:6%;left:2%;transform:rotate(-3deg);z-index:2;}
+.hero-card-sm:nth-child(3){bottom:8%;right:4%;transform:rotate(2deg);z-index:2;}
+.hcs-thumb{height:100px;display:flex;align-items:center;justify-content:center;font-size:32px;}
+.hcs-body{padding:7px 10px 9px;}
+.hcs-name{font-family:'Instrument Serif',serif;font-size:12px;color:var(--text);}
+.hcs-price{font-family:'Caveat',cursive;font-size:12px;color:var(--rose);}
+
+/* Notification pills */
+.notif{
+  position:absolute;background:var(--card-bg);border:1px solid var(--border);
+  border-radius:100px;padding:7px 13px;font-size:11px;font-weight:500;
+  box-shadow:0 4px 16px rgba(0,0,0,.08);
+  display:flex;align-items:center;gap:6px;
+  animation:floatUp 5s ease-in-out infinite;z-index:5;
+  color:var(--text);
+}
+.notif:nth-child(5){top:4%;right:6%;animation-delay:0s;}
+.notif:nth-child(6){top:30%;left:0%;animation-delay:1.8s;}
+.notif:nth-child(7){bottom:18%;left:6%;animation-delay:3.5s;}
+.ndot{width:7px;height:7px;border-radius:50%;}
+@keyframes floatUp{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+
+/* ── MARQUEE ── */
+.marquee-sec{
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:12px 0;overflow:hidden;background:var(--warm);
+}
+.mq-track{display:flex;white-space:nowrap;animation:mq 30s linear infinite;}
+.mq-item{
+  font-family:'Caveat',cursive;font-size:17px;color:var(--muted);
+  padding:0 2.5rem;display:flex;align-items:center;gap:10px;flex-shrink:0;
+}
+.mq-dot{color:var(--rose);}
+@keyframes mq{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ── HOW IT WORKS ── */
+.how{padding:90px 3rem;}
+.how-inner{max-width:1100px;margin:0 auto;}
+.steps-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);border-radius:20px;overflow:hidden;
+  margin-top:3rem;
+}
+.step{
+  background:var(--card-bg);padding:2rem 1.5rem;
+  transition:background .2s;
+}
+.step:hover{background:var(--warm);}
+.step-n{font-family:'Caveat',cursive;font-size:14px;color:var(--rose);margin-bottom:6px;}
+.step-ico{font-size:28px;margin-bottom:10px;}
+.step-t{font-family:'Instrument Serif',serif;font-size:1.15rem;color:var(--text);margin-bottom:5px;}
+.step-d{font-size:12px;color:var(--muted);line-height:1.7;font-weight:300;}
+.step-gz{font-family:'Caveat',cursive;font-size:12px;color:var(--rose);margin-top:5px;}
+
+/* ── FEATURES ── */
+.features{padding:90px 3rem;background:var(--warm);border-top:1px solid var(--border);}
+.feat-inner{max-width:1100px;margin:0 auto;}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:3rem;}
+.fc{
+  background:var(--card-bg);border:1px solid var(--border);
+  border-radius:18px;padding:1.6rem;transition:all .25s;
+  position:relative;overflow:hidden;
+}
+.fc::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  opacity:0;transition:opacity .25s;
+}
+.fc:nth-child(1)::before{background:linear-gradient(90deg,var(--rose),#e8a040);}
+.fc:nth-child(2)::before{background:linear-gradient(90deg,#3ab8b0,var(--rose));}
+.fc:nth-child(3)::before{background:linear-gradient(90deg,var(--rose),#9b59b6);}
+.fc:nth-child(4)::before{background:linear-gradient(90deg,#e8a040,var(--rose));}
+.fc:nth-child(5)::before{background:linear-gradient(90deg,#3B6D11,#3ab8b0);}
+.fc:nth-child(6)::before{background:linear-gradient(90deg,var(--rose),#3B6D11);}
+.fc:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.08);}
+.fc:hover::before{opacity:1;}
+.fc-ico-wrap{
+  width:44px;height:44px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;margin-bottom:1rem;
+}
+.fw1{background:#FBEAF0;}.fw2{background:#FAEEDA;}.fw3{background:#EAF3DE;}
+.fw4{background:#E6F1FB;}.fw5{background:#EEEDFE;}.fw6{background:#E1F5EE;}
+.fc-name{font-family:'Instrument Serif',serif;font-size:1.1rem;color:var(--text);margin-bottom:4px;}
+.fc-gz{font-family:'Caveat',cursive;font-size:12px;color:var(--rose);margin-bottom:6px;}
+.fc-desc{font-size:12px;color:var(--muted);line-height:1.7;font-weight:300;}
+
+/* ── CREATORS ── */
+.creators{padding:90px 3rem;border-top:1px solid var(--border);}
+.creators-inner{max-width:1100px;margin:0 auto;}
+.creator-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:3rem;}
+.creator-card{
+  flex:1;min-width:150px;background:var(--card-bg);border:1px solid var(--border);
+  border-radius:20px;padding:1.5rem 1.2rem;text-align:center;
+  transition:all .25s;cursor:pointer;text-decoration:none;display:block;
+}
+.creator-card:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(194,96,126,.1);}
+.cr-av{
+  width:60px;height:60px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;margin:0 auto 10px;
+  border:2px dashed var(--border);
+}
+.cr-name{font-family:'Instrument Serif',serif;font-size:1rem;color:var(--text);margin-bottom:3px;}
+.cr-craft{font-family:'Caveat',cursive;font-size:13px;color:var(--muted);margin-bottom:.7rem;}
+.cr-badge{
+  display:inline-block;font-size:10px;font-weight:500;
+  background:var(--rosebg);color:var(--rose);
+  padding:3px 12px;border-radius:100px;
+}
+
+/* ── PRODUCT FEED ── */
+.feed{padding:90px 3rem;background:var(--warm);border-top:1px solid var(--border);}
+.feed-inner{max-width:1100px;margin:0 auto;}
+.feed-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:2rem;}
+.feed-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.5rem;}
+.ftab{
+  font-family:'Caveat',cursive;font-size:15px;
+  padding:5px 17px;border-radius:100px;
+  border:1px solid var(--border);background:transparent;
+  color:var(--muted);cursor:pointer;transition:all .15s;
+}
+.ftab.active,.ftab:hover{background:var(--rose);color:white;border-color:var(--rose);}
+.feed-grid{columns:4;gap:10px;}
+
+/* ── SONA BANNER ── */
+.sona-banner{
+  padding:80px 3rem;
+  background:linear-gradient(135deg,var(--rosebg),var(--warm),var(--rosebg));
+  border-top:1px solid var(--border);text-align:center;
+}
+.sb-unicorn{font-size:4rem;display:block;margin-bottom:.8rem;animation:bounce 2.5s ease-in-out infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0) rotate(-5deg);}50%{transform:translateY(-12px) rotate(5deg);}}
+.sb-title{font-family:'Instrument Serif',serif;font-size:2.2rem;letter-spacing:-.5px;margin-bottom:.5rem;}
+.sb-title em{font-style:italic;color:var(--rose);}
+.sb-gz{font-family:'Caveat',cursive;font-size:16px;color:var(--muted);margin-bottom:1.5rem;}
+.sb-input-row{
+  display:flex;gap:10px;max-width:520px;margin:0 auto;
+  background:var(--card-bg);border:1.5px solid var(--border);
+  border-radius:100px;padding:5px 5px 5px 20px;
+  transition:border-color .2s;
+}
+.sb-input-row:focus-within{border-color:var(--rose);}
+.sb-inp{
+  flex:1;font-family:'DM Sans',sans-serif;font-size:13px;
+  background:transparent;border:none;outline:none;color:var(--text);
+}
+.sb-inp::placeholder{color:var(--muted);}
+.sb-submit{
+  background:var(--rose);color:white;border:none;border-radius:100px;
+  padding:10px 22px;font-size:13px;font-weight:500;cursor:pointer;
+  font-family:'DM Sans',sans-serif;transition:filter .2s;flex-shrink:0;
+}
+.sb-submit:hover{filter:brightness(.9);}
+
+/* ── CTA ── */
+.cta{padding:0 3rem 80px;}
+.cta-in{
+  max-width:1100px;margin:0 auto;
+  background:var(--text);border-radius:26px;padding:4rem 3rem;
+  display:flex;align-items:center;justify-content:space-between;gap:2rem;
+  position:relative;overflow:hidden;
+}
+.cta-doodle{position:absolute;right:80px;top:0;bottom:0;width:200px;opacity:.07;pointer-events:none;}
+.cta-title{font-family:'Instrument Serif',serif;font-size:2.5rem;letter-spacing:-.5px;color:var(--bg);line-height:1.1;}
+.cta-title em{font-style:italic;color:var(--rose);}
+.cta-sub{font-family:'Caveat',cursive;font-size:16px;color:#8a7a6a;margin-top:.5rem;}
+.cta-btn{
+  background:var(--bg);color:var(--text);border:none;
+  padding:14px 32px;border-radius:100px;font-size:14px;font-weight:500;
+  cursor:pointer;flex-shrink:0;font-family:'DM Sans',sans-serif;
+  transition:all .2s;text-decoration:none;display:inline-block;
+}
+.cta-btn:hover{background:var(--rose);color:white;}
+
+/* ── FOOTER ── */
+.footer-big{
+  background:var(--text);color:var(--bg);
+  padding:3.5rem 3rem 1.5rem;
+}
+.fb-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem;margin-bottom:2.5rem;}
+.fb-brand{font-family:'Instrument Serif',serif;font-size:28px;color:var(--rose);margin-bottom:.3rem;}
+.fb-brand em{font-style:italic;}
+.fb-tagline{font-family:'Caveat',cursive;font-size:14px;color:#8a7a6a;margin-bottom:1rem;}
+.fb-desc{font-size:12px;color:#6a5a4a;line-height:1.75;}
+.fh{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#8a7a6a;margin-bottom:.9rem;}
+.footer-big a{display:block;font-size:13px;color:#c0b0a0;margin-bottom:.4rem;text-decoration:none;transition:color .15s;}
+.footer-big a:hover{color:var(--rose);}
+.fb-bottom{border-top:1px solid rgba(255,255,255,.06);padding-top:1.2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;}
+.fb-copy{font-family:'Caveat',cursive;font-size:14px;color:#6a5a4a;}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(22px);transition:all .7s cubic-bezier(.23,1,.32,1);}
+.reveal.visible{opacity:1;transform:none;}
+.d1{transition-delay:.1s;}.d2{transition-delay:.2s;}.d3{transition-delay:.3s;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr;}.hero-right{display:none;}
+  .feat-grid{grid-template-columns:1fr 1fr;}.steps-grid{grid-template-columns:1fr 1fr;}
+  .feed-grid{columns:2;}.fb-grid{grid-template-columns:1fr 1fr;}
+  .hero,.how,.features,.creators,.feed,.sona-banner,.cta{padding-left:1.5rem;padding-right:1.5rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav class="nav">
+  <a href="/index.html" class="nav-logo">Priy<em>araa</em></a>
+  <ul class="nav-links">
+    <li><a href="/index.html">discover</a></li>
+    <li><a href="/seller.html?id=1">creators</a></li>
+    <li><a href="/reels.html">reels ✦</a></li>
+    <li><a href="/giftbot.html">sona 🦄</a></li>
+    <li><a href="/chat.html">messages</a></li>
+  </ul>
+  <div class="nav-btns" id="nav-btns">
+    <a href="/login.html" class="btn btn-outline btn-sm">login</a>
+    <a href="/login.html" class="btn btn-rose btn-sm">join free ✦</a>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+
+  <!-- Scattered hand-drawn doodles -->
+  <div class="doodle-layer">
+    <svg width="100%" height="100%" viewBox="0 0 1200 700" fill="none" preserveAspectRatio="xMidYMid slice">
+      <!-- Thread/needle top right -->
+      <path d="M980 40C1000 70 1020 50 1010 85C1000 120 975 108 965 143C955 178 972 198 952 218" stroke="#C2607E" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".25"/>
+      <line x1="996" y1="25" x2="968" y2="84" stroke="#1a1208" stroke-width="1.2" stroke-linecap="round" opacity=".2"/>
+      <ellipse cx="998" cy="22" rx="4.5" ry="7" stroke="#1a1208" stroke-width="1" fill="none" transform="rotate(-20 998 22)" opacity=".2"/>
+      <circle cx="999" cy="20" r="1.5" fill="#1a1208" opacity=".2"/>
+      <!-- Heart left -->
+      <path d="M95 180C95 173 87 173 87 180C87 187 95 192 95 192C95 192 103 187 103 180C103 173 95 173 95 180Z" fill="#C2607E" opacity=".3"/>
+      <!-- Star top left -->
+      <path d="M160 80L163 90L173 90L165 96L168 106L160 100L152 106L155 96L147 90L157 90Z" stroke="#D4831A" stroke-width="1" fill="none" opacity=".25"/>
+      <!-- Scissors bottom right -->
+      <circle cx="1090" cy="560" r="5" stroke="#C2607E" stroke-width="1.2" fill="none" opacity=".2"/>
+      <circle cx="1104" cy="568" r="5" stroke="#C2607E" stroke-width="1.2" fill="none" opacity=".2"/>
+      <line x1="1094" y1="556" x2="1140" y2="520" stroke="#C2607E" stroke-width="1.2" stroke-linecap="round" opacity=".2"/>
+      <line x1="1100" y1="572" x2="1140" y2="520" stroke="#C2607E" stroke-width="1.2" stroke-linecap="round" opacity=".2"/>
+      <!-- Leaf -->
+      <path d="M60 420C72 398 96 405 82 428C75 441 60 444 60 420Z" stroke="#3B6D11" stroke-width="1.1" fill="#EAF3DE" opacity=".4"/>
+      <line x1="60" y1="420" x2="83" y2="424" stroke="#3B6D11" stroke-width=".9" opacity=".4"/>
+      <!-- Tiny buttons -->
+      <circle cx="1150" cy="120" r="8" stroke="#C2607E" stroke-width="1" fill="none" opacity=".2"/>
+      <circle cx="1147" cy="117" r="1.2" fill="#C2607E" opacity=".3"/>
+      <circle cx="1153" cy="117" r="1.2" fill="#C2607E" opacity=".3"/>
+      <circle cx="1147" cy="123" r="1.2" fill="#C2607E" opacity=".3"/>
+      <circle cx="1153" cy="123" r="1.2" fill="#C2607E" opacity=".3"/>
+      <!-- Wavy line bottom -->
+      <path d="M0 650C80 638 160 660 240 648C320 636 400 658 480 646C560 634 640 656 720 644C800 632 880 654 960 642C1040 630 1120 652 1200 640" stroke="#C2607E" stroke-width="1.2" fill="none" opacity=".12" stroke-linecap="round"/>
+      <!-- Sparkles -->
+      <path d="M400 60L401.5 65L406 66.5L401.5 68L400 73L398.5 68L394 66.5L398.5 65Z" fill="#D4831A" opacity=".3"/>
+      <path d="M820 500L821 504L825 505L821 506L820 510L819 506L815 505L819 504Z" fill="#C2607E" opacity=".3"/>
+      <path d="M200 550L201.5 555L206 556.5L201.5 558L200 563L198.5 558L194 556.5L198.5 555Z" fill="#C2607E" opacity=".25"/>
+    </svg>
+  </div>
+
+  <div class="hero-inner">
+    <div>
+      <div class="hero-ey">✦ handmade with heart</div>
+      <h1 class="hero-h1">
+        Made by<br>
+        <span class="italic">real</span><br>
+        <span class="underlined">hands
+          <svg viewBox="0 0 200 14" fill="none" aria-hidden="true">
+            <path d="M4 10C40 4 80 13 120 7C155 2 185 11 196 8" stroke="#C2607E" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+          </svg>
+        </span>
+      </h1>
+
+      <div class="genz-strip">
+        <span class="gz">no cap ✨</span>
+        <span class="gz">hits different 🌸</span>
+        <span class="gz">made just for u</span>
+        <span class="gz">not mass produced fr</span>
+      </div>
+
+      <p class="hero-desc">
+        Priyaraa is where artisans <strong>co-create</strong> with you directly. No factory, no copy-paste. Just one human making something <strong>just for you</strong> — with your name, your colors, your vibe.
+      </p>
+
+      <div class="hero-ctas">
+        <a href="/login.html" class="btn btn-dark btn-lg">explore handmade ✦</a>
+        <a href="/login.html" class="btn btn-ghost btn-lg">sell ur craft →</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hs"><div class="hs-val">12k+</div><div class="hs-label">~ verified artisans</div></div>
+        <div class="hs"><div class="hs-val">94k</div><div class="hs-label">~ custom orders</div></div>
+        <div class="hs"><div class="hs-val">4.9★</div><div class="hs-label">~ avg. rating</div></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Floating card cluster -->
+    <div class="hero-right">
+      <!-- Main card -->
+      <div class="hero-main-card">
+        <div class="hmc-thumb">🧸</div>
+        <div class="hmc-body">
+          <div class="hmc-tag">✦ custom · handwoven</div>
+          <div class="hmc-title">Plushie doll — "Aanya"</div>
+          <div class="hmc-price">~ ₹1,299 onwards</div>
+        </div>
+      </div>
+      <!-- Small cards -->
+      <div class="hero-card-sm">
+        <div class="hcs-thumb tb2">🪡</div>
+        <div class="hcs-body"><div class="hcs-name">Macramé wall art</div><div class="hcs-price">~ ₹1,800</div></div>
+      </div>
+      <div class="hero-card-sm">
+        <div class="hcs-thumb tb4">🎨</div>
+        <div class="hcs-body"><div class="hcs-name">Pet portrait</div><div class="hcs-price">~ ₹1,800</div></div>
+      </div>
+      <!-- Notifications -->
+      <div class="notif"><div class="ndot" style="background:#4CAF50;"></div>Meera just shipped 🌸</div>
+      <div class="notif"><div class="ndot" style="background:#C2607E;"></div>284 liked this ❤️</div>
+      <div class="notif"><div class="ndot" style="background:#D4831A;"></div>new order for Rohan 📦</div>
+    </div>
+  </div>
+
+  <!-- Scroll hint -->
+  <div style="position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;z-index:2;">
+    <div style="width:1px;height:40px;background:linear-gradient(to bottom,var(--rose),transparent);animation:grow 2s ease-in-out infinite;"></div>
+    <div style="font-family:'Caveat',cursive;font-size:12px;color:var(--muted);">scroll</div>
+  </div>
+  <style>@keyframes grow{0%,100%{opacity:.3;}50%{opacity:1;}}</style>
+</section>
+
+<!-- ══ MARQUEE ══ -->
+<div class="marquee-sec">
+  <div class="mq-track">
+    <span class="mq-item"><span class="mq-dot">✦</span>handmade jewellery</span>
+    <span class="mq-item"><span class="mq-dot">✦</span>custom portraits</span>
+    <span class="mq-item"><span class="mq-dot">✦</span>embroidery hoops</span>
+    <span class="mq-item"><span class="mq-dot">✦</span>resin art</span>
+    <span class="mq-item"><span class="mq-dot">✦</span>clay pottery</span>
+    <span class="mq-item"><span class="mq-dot">✦</span>macramé wall art</span>
+    <span class="mq-item"><span class="mq-dot">✦</span>personalised candles</span>
+    <span class="mq-item"><span class="mq-dot">✦</span>wooden name boards</span>
+    <span class="mq-item"><span class="mq-dot">✦</span>painted sarees</span>
+    <span class="mq-item"><span class="mq-dot">✦</span>handmade jewellery</span>
+    <span class="mq-item"><span class="mq-dot">✦</span>custom portraits</span>
+    <span class="mq-item"><span class="mq-dot">✦</span>embroidery hoops</span>
+    <span class="mq-item"><span class="mq-dot">✦</span>resin art</span>
+    <span class="mq-item"><span class="mq-dot">✦</span>clay pottery</span>
+    <span class="mq-item"><span class="mq-dot">✦</span>macramé wall art</span>
+    <span class="mq-item"><span class="mq-dot">✦</span>personalised candles</span>
+    <span class="mq-item"><span class="mq-dot">✦</span>wooden name boards</span>
+  </div>
+</div>
+
+<!-- ══ HOW IT WORKS ══ -->
+<section class="how">
+  <div class="how-inner">
+    <div class="sec-ey reveal">~ the vibe check</div>
+    <h2 class="sec-ti reveal">from "omg what do i get" to<br><em>omg it's perfect</em> ✦</h2>
+    <div class="steps-grid">
+      <div class="step reveal">
+        <div class="step-n">01 /</div>
+        <div class="step-ico">🔍</div>
+        <div class="step-t">Discover</div>
+        <div class="step-d">scroll aesthetic feeds and artisan reels by mood and vibe</div>
+        <div class="step-gz">the for you page but make it handmade ✨</div>
+      </div>
+      <div class="step reveal d1">
+        <div class="step-n">02 /</div>
+        <div class="step-ico">✏️</div>
+        <div class="step-t">Customise</div>
+        <div class="step-d">add names, colors, size, reference images — ur exact vision</div>
+        <div class="step-gz">understood the assignment fr fr</div>
+      </div>
+      <div class="step reveal d2">
+        <div class="step-n">03 /</div>
+        <div class="step-ico">💬</div>
+        <div class="step-t">Co-create</div>
+        <div class="step-d">DM the artisan directly, see progress photos, be part of the making</div>
+        <div class="step-gz">no cap this is the best part</div>
+      </div>
+      <div class="step reveal d3">
+        <div class="step-n">04 /</div>
+        <div class="step-ico">🎁</div>
+        <div class="step-t">Cherish</div>
+        <div class="step-d">unbox something literally only yours. not a factory, not mass-made</div>
+        <div class="step-gz">hits different every single time 🌸</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FEATURES ══ -->
+<section class="features">
+  <div class="feat-inner">
+    <div class="sec-ey reveal">~ why we're built different bestie</div>
+    <h2 class="sec-ti reveal">we didn't copy anyone.<br><em>fr fr.</em></h2>
+    <div class="feat-grid">
+      <div class="fc reveal">
+        <div class="fc-ico-wrap fw1">🖼️</div>
+        <div class="fc-name">Pinterest-style feeds</div>
+        <div class="fc-gz">main character browsing ✨</div>
+        <div class="fc-desc">aesthetic masonry layout — browse by mood, vibe, and aesthetic. not boring category grids.</div>
+      </div>
+      <div class="fc reveal d1">
+        <div class="fc-ico-wrap fw2">🎬</div>
+        <div class="fc-name">Artisan reels</div>
+        <div class="fc-gz">the making process is the content</div>
+        <div class="fc-desc">shoppable short videos. you see it being made, you buy it. story-first commerce.</div>
+      </div>
+      <div class="fc reveal d2">
+        <div class="fc-ico-wrap fw3">✏️</div>
+        <div class="fc-name">Deep customisation</div>
+        <div class="fc-gz">ur name, ur colors, ur vibe</div>
+        <div class="fc-desc">name engraving, color choices, size selection, reference image uploads. literally co-design.</div>
+      </div>
+      <div class="fc reveal">
+        <div class="fc-ico-wrap fw4">💬</div>
+        <div class="fc-name">Direct creator chat</div>
+        <div class="fc-gz">no middleman, just vibes</div>
+        <div class="fc-desc">real messages with the artisan. order updates, progress pics, direct feedback.</div>
+      </div>
+      <div class="fc reveal d1">
+        <div class="fc-ico-wrap fw5">🦄</div>
+        <div class="fc-name">Sona — AI gift guide</div>
+        <div class="fc-gz">ur unicorn bestie for gifting</div>
+        <div class="fc-desc">tell Sona who, what vibe, what budget. she finds the perfect handmade gift. every time.</div>
+      </div>
+      <div class="fc reveal d2">
+        <div class="fc-ico-wrap fw6">✅</div>
+        <div class="fc-name">Verified + secure</div>
+        <div class="fc-gz">only real ones get through</div>
+        <div class="fc-desc">every seller verified. escrow payments. buyer reviews. no cap, ur protected fr.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CREATORS ══ -->
+<section class="creators">
+  <div class="creators-inner">
+    <div class="sec-ey reveal">~ the artisans understood the assignment</div>
+    <h2 class="sec-ti reveal">meet the ones who<br>make the <em>magic</em></h2>
+    <div class="creator-row">
+      <a href="/seller.html?id=1" class="creator-card reveal">
+        <div class="cr-av" style="background:#FDE8EF;">🧶</div>
+        <div class="cr-name">Meera Sharma</div>
+        <div class="cr-craft">~ Textile & Knit</div>
+        <div class="cr-badge">top seller 🌸</div>
+      </a>
+      <a href="/seller.html?id=2" class="creator-card reveal d1">
+        <div class="cr-av" style="background:#EAF3DE;">🎨</div>
+        <div class="cr-name">Canvas Studio</div>
+        <div class="cr-craft">~ Portraits & Art</div>
+        <div class="cr-badge">verified ✓</div>
+      </a>
+      <a href="/seller.html?id=1" class="creator-card reveal d2">
+        <div class="cr-av" style="background:#FAEEDA;">🕯️</div>
+        <div class="cr-name">Lumena Lab</div>
+        <div class="cr-craft">~ Candles & Resin</div>
+        <div class="cr-badge">top seller 🌸</div>
+      </a>
+      <a href="/seller.html?id=2" class="creator-card reveal d1">
+        <div class="cr-av" style="background:#E6F1FB;">💍</div>
+        <div class="cr-name">Artisana</div>
+        <div class="cr-craft">~ Jewellery</div>
+        <div class="cr-badge">rising star ✦</div>
+      </a>
+      <a href="/seller.html?id=1" class="creator-card reveal d2">
+        <div class="cr-av" style="background:#EEEDFE;">🪡</div>
+        <div class="cr-name">Knot & Soul</div>
+        <div class="cr-craft">~ Macramé</div>
+        <div class="cr-badge">verified ✓</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PRODUCT FEED ══ -->
+<section class="feed">
+  <div class="feed-inner">
+    <div class="feed-header reveal">
+      <div>
+        <div class="sec-ey">~ ur for you page but make it handmade</div>
+        <h2 class="sec-ti" style="margin-bottom:0;">main character <em>picks</em> ✦</h2>
+      </div>
+      <a href="/seller.html?id=1" style="font-size:13px;color:var(--rose);font-family:'Caveat',cursive;font-size:16px;text-decoration:none;">see all creators →</a>
+    </div>
+    <div class="feed-tabs">
+      <button class="ftab active">all</button>
+      <button class="ftab">jewellery 💍</button>
+      <button class="ftab">art 🎨</button>
+      <button class="ftab">home 🏺</button>
+      <button class="ftab">custom ✏️</button>
+      <button class="ftab">gifts 🎁</button>
+    </div>
+    <div class="feed-grid" id="feed-grid">
+      <a href="/product.html?id=1" class="fpin"><div class="fpin-thumb tb1" style="aspect-ratio:.8;">🧸</div><div class="fpin-body"><div class="fpin-name">Custom plushie doll</div><div class="fpin-price">~ ₹1,299</div></div></a>
+      <a href="/product.html?id=2" class="fpin"><div class="fpin-thumb tb5" style="aspect-ratio:1.1;">💌</div><div class="fpin-body"><div class="fpin-name">Letter art print</div><div class="fpin-price">~ ₹799</div></div></a>
+      <a href="/product.html?id=3" class="fpin"><div class="fpin-thumb tb3" style="aspect-ratio:.7;">🏺</div><div class="fpin-body"><div class="fpin-name">Ceramic mug</div><div class="fpin-price">~ ₹620</div></div></a>
+      <a href="/product.html?id=4" class="fpin"><div class="fpin-thumb tb7" style="aspect-ratio:1.2;">💍</div><div class="fpin-body"><div class="fpin-name">Birthstone ring</div><div class="fpin-price">~ ₹2,100</div></div></a>
+      <a href="/product.html?id=1" class="fpin"><div class="fpin-thumb tb2" style="aspect-ratio:.9;">🌿</div><div class="fpin-body"><div class="fpin-name">Pressed flower frame</div><div class="fpin-price">~ ₹850</div></div></a>
+      <a href="/product.html?id=2" class="fpin"><div class="fpin-thumb tb6" style="aspect-ratio:1.0;">🪴</div><div class="fpin-body"><div class="fpin-name">Wall planter</div><div class="fpin-price">~ ₹430</div></div></a>
+      <a href="/product.html?id=3" class="fpin"><div class="fpin-thumb tb4" style="aspect-ratio:.75;">🕯️</div><div class="fpin-body"><div class="fpin-name">Engraved candle</div><div class="fpin-price">~ ₹499</div></div></a>
+      <a href="/product.html?id=4" class="fpin"><div class="fpin-thumb tb8" style="aspect-ratio:1.1;">🎨</div><div class="fpin-body"><div class="fpin-name">Pet portrait</div><div class="fpin-price">~ ₹1,800</div></div></a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SONA BANNER ══ -->
+<section class="sona-banner">
+  <span class="sb-unicorn">🦄</span>
+  <h2 class="sb-title reveal">meet <em>Sona</em> — ur gift bestie</h2>
+  <p class="sb-gz reveal d1">no cap she knows every artisan on priyaraa and finds the perfect gift in seconds ✨</p>
+  <div class="sb-input-row reveal d2">
+    <input class="sb-inp" id="sona-q" placeholder="birthday gift for bestie, budget ₹800... tell Sona everything 🦄">
+    <button class="sb-submit" onclick="goSona()">ask Sona →</button>
+  </div>
+</section>
+
+<!-- ══ CTA ══ -->
+<section class="cta">
+  <div class="cta-in">
+    <svg class="cta-doodle" viewBox="0 0 200 300" fill="none">
+      <path d="M100 20C120 50 140 30 130 65C120 100 95 88 85 123C75 158 92 175 72 198C52 221 60 255 40 272" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M50 80C62 58 80 65 68 88C61 101 50 104 50 80Z" stroke="white" stroke-width="1.3" fill="none"/>
+      <circle cx="150" cy="150" r="4" fill="white" opacity=".5"/>
+      <circle cx="170" cy="200" r="3" fill="white" opacity=".4"/>
+    </svg>
+    <div>
+      <h2 class="cta-title">ur craft is giving<br>main character <em>energy.</em></h2>
+      <div class="cta-sub">~ show up. 12,000+ artisans understood the assignment.</div>
+    </div>
+    <a href="/login.html" class="cta-btn">join the vibe → ✦</a>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer class="footer-big">
+  <div class="fb-grid">
+    <div>
+      <div class="fb-brand">Priy<em>araa</em></div>
+      <div class="fb-tagline">~ handmade with heart · made just for u</div>
+      <p class="fb-desc">India's first creator-first personalized handmade marketplace. where every purchase is a personal story, not a mass-produced transaction.</p>
+    </div>
+    <div>
+      <div class="fh">shop</div>
+      <a href="/index.html">discover</a>
+      <a href="/reels.html">artisan reels</a>
+      <a href="/giftbot.html">sona AI 🦄</a>
+      <a href="/product.html?id=1">products</a>
+    </div>
+    <div>
+      <div class="fh">sell</div>
+      <a href="/login.html">become a seller</a>
+      <a href="/seller.html?id=1">seller profile</a>
+      <a href="/chat.html">messages</a>
+    </div>
+    <div>
+      <div class="fh">connect</div>
+      <a href="#">instagram</a>
+      <a href="#">pinterest</a>
+      <a href="#">whatsapp</a>
+      <a href="#">email us</a>
+    </div>
+  </div>
+  <div class="fb-bottom">
+    <div class="fb-copy">© 2025 Priyaraa · made with 🌸 for India's artisans</div>
+    <div class="fb-copy">empowering local creators · personalising global commerce</div>
+  </div>
+</footer>
+
+<!-- ══ THEME SWITCHER ══ -->
+<div class="theme-switcher">
+  <div class="theme-palette" id="palette">
+    <div class="palette-opt active" data-theme="light" onclick="setTheme('light')"><div class="palette-dot" style="background:#C2607E;"></div>Rose Light</div>
+    <div class="palette-opt" data-theme="dark" onclick="setTheme('dark')"><div class="palette-dot" style="background:#e8849e;border:2px solid #0f0d0b;"></div>Rose Dark</div>
+    <div class="palette-opt" data-theme="green" onclick="setTheme('green')"><div class="palette-dot" style="background:#4a8c5c;"></div>Sage Light</div>
+    <div class="palette-opt" data-theme="dark-green" onclick="setTheme('dark-green')"><div class="palette-dot" style="background:#6abf80;border:2px solid #080f0a;"></div>Forest Dark</div>
+  </div>
+  <div class="theme-toggle-btn" onclick="togglePalette()">🎨</div>
+</div>
+
+<script src="/api.js"></script>
+<script>
+// ── THEME ──
+function setTheme(t){document.documentElement.setAttribute('data-theme',t);localStorage.setItem('priyaraa_theme',t);document.querySelectorAll('.palette-opt').forEach(o=>o.classList.toggle('active',o.getAttribute('data-theme')===t));}
+function togglePalette(){document.getElementById('palette').classList.toggle('open');}
+document.addEventListener('click',e=>{if(!e.target.closest('.theme-switcher'))document.getElementById('palette')?.classList.remove('open');});
+(function(){const t=localStorage.getItem('priyaraa_theme');if(t)setTheme(t);})();
+
+// ── NAV: show user if logged in ──
+(function(){
+  const user=Auth.user();const btns=document.getElementById('nav-btns');
+  if(btns&&user)btns.innerHTML=`<span style="font-family:'Caveat',cursive;font-size:15px;color:var(--muted);">~ ${user.name.split(' ')[0]}</span><div style="width:32px;height:32px;border-radius:50%;background:var(--rosebg);border:1.5px solid var(--rose2);display:flex;align-items:center;justify-content:center;font-size:15px;">${user.avatar||'🌸'}</div><button onclick="Auth.logout()" class="btn btn-ghost btn-sm">logout</button>`;
+})();
+
+// ── REVEAL ──
+const revObs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+
+// ── FEED: load real products ──
+async function loadFeed(){
+  try{
+    const res=await PriyaraaAPI.products.list({limit:8});
+    if(!res.success||!res.products.length)return;
+    const bgs=['tb1','tb2','tb3','tb4','tb5','tb6','tb7','tb8'];
+    const rats=['.8','1.1','.7','1.2','.9','1.0','.75','1.1'];
+    document.getElementById('feed-grid').innerHTML=res.products.map((p,i)=>`
+      <a href="/product.html?id=${p.id}" class="fpin">
+        <div class="fpin-thumb ${bgs[i%8]}" style="aspect-ratio:${rats[i%8]};">${p.emoji||'🎁'}</div>
+        <div class="fpin-body">
+          <div class="fpin-name">${p.title}</div>
+          <div class="fpin-price">~ ₹${p.price.toLocaleString()}</div>
+        </div>
+      </a>`).join('');
+  }catch(e){}
+}
+loadFeed();
+
+// ── FEED TABS ──
+document.querySelectorAll('.ftab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.ftab').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+}));
+
+// ── SONA redirect ──
+function goSona(){
+  const q=document.getElementById('sona-q').value;
+  if(q)localStorage.setItem('sona_q',q);
+  window.location.href='/giftbot.html';
+}
+document.getElementById('sona-q')?.addEventListener('keydown',e=>{if(e.key==='Enter')goSona();});
+</script>
+</body>
+</html>

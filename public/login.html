@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Login — Priyaraa ✦</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital,wght@0,400;1,400&family=Caveat:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css"/>
+<style>
+html,body{height:100%;overflow:hidden;}
+body{display:flex;align-items:stretch;}
+
+/* ── SPLIT LAYOUT ── */
+.lp-left{
+  flex:1;position:relative;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:3rem;
+  background:var(--ink);
+  transition:background .4s;
+}
+/* Gradient overlay on left */
+.lp-left::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to bottom,transparent 30%,rgba(26,18,8,.85));
+  z-index:1;pointer-events:none;
+}
+/* Doodle bg */
+.lp-bg-art{
+  position:absolute;inset:0;z-index:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.lp-content{position:relative;z-index:2;}
+.lp-brand{font-family:'Instrument Serif',serif;font-size:30px;color:var(--rose);margin-bottom:4px;}
+.lp-brand em{font-style:italic;color:#f0ebe3;}
+[data-theme="dark"] .lp-brand em,[data-theme="dark-green"] .lp-brand em{color:var(--text);}
+.lp-tagline{font-family:'Caveat',cursive;font-size:15px;color:#8a7a6a;margin-bottom:1.8rem;}
+.lp-headline{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(2rem,4vw,3rem);
+  line-height:1.1;color:white;margin-bottom:.8rem;
+}
+[data-theme="dark"] .lp-headline,[data-theme="dark-green"] .lp-headline{color:var(--text);}
+.lp-headline em{font-style:italic;color:var(--rose);}
+.lp-sub{font-size:13px;color:#9a8a7a;line-height:1.8;margin-bottom:1.8rem;font-weight:300;max-width:380px;}
+/* Creator pills */
+.lp-creators{display:flex;flex-direction:column;gap:8px;margin-bottom:1.5rem;}
+.lp-cr{
+  display:flex;align-items:center;gap:12px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
+  border-radius:14px;padding:.7rem 1rem;backdrop-filter:blur(8px);
+}
+.lcr-av{width:34px;height:34px;border-radius:50%;background:var(--rosebg);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.lcr-name{font-size:12px;font-weight:500;color:white;margin-bottom:1px;}
+[data-theme="dark"] .lcr-name,[data-theme="dark-green"] .lcr-name{color:var(--text);}
+.lcr-craft{font-size:10px;color:#8a7a6a;}
+.lcr-stat{margin-left:auto;font-family:'Caveat',cursive;font-size:13px;color:var(--rose);}
+/* Bottom genz badges */
+.lp-gz{display:flex;flex-wrap:wrap;gap:5px;}
+.lgz{font-family:'Caveat',cursive;font-size:12px;padding:3px 11px;border-radius:100px;background:rgba(194,96,126,.2);color:var(--rose);border:1px solid rgba(194,96,126,.3);}
+
+/* ── RIGHT PANEL ── */
+.lp-right{
+  width:440px;flex-shrink:0;background:var(--bg);
+  overflow-y:auto;display:flex;flex-direction:column;
+  justify-content:center;padding:2.5rem;
+  border-left:1px solid var(--border);
+  transition:background .4s;
+}
+.lr-logo{font-family:'Instrument Serif',serif;font-size:22px;color:var(--rose);margin-bottom:4px;}
+.lr-logo em{font-style:italic;color:var(--text);}
+.lr-hey{font-family:'Caveat',cursive;font-size:15px;color:var(--muted);margin-bottom:2rem;}
+
+/* TABS */
+.auth-tabs{display:flex;gap:0;background:var(--surface);border:1.5px solid var(--border);border-radius:100px;padding:3px;margin-bottom:1.8rem;}
+.auth-tab{flex:1;text-align:center;padding:9px 14px;font-size:13px;border-radius:100px;cursor:pointer;color:var(--muted);transition:all .2s;}
+.auth-tab.active{background:var(--rose);color:white;font-weight:500;}
+
+/* Form pages */
+.auth-page{display:none;}
+.auth-page.active{display:block;}
+
+/* Method selector (email/phone) */
+.method-sel{display:flex;gap:6px;margin-bottom:1.2rem;}
+.msel{
+  flex:1;padding:9px 12px;border:1.5px solid var(--border);border-radius:12px;
+  font-size:12px;cursor:pointer;text-align:center;transition:all .2s;
+  background:var(--surface);color:var(--muted);font-family:'DM Sans',sans-serif;
+}
+.msel.active{border-color:var(--rose);color:var(--rose);background:var(--rosebg);}
+
+/* Form fields */
+.fg{margin-bottom:1rem;}
+.fg-lbl{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;display:block;}
+.fg-inp{
+  width:100%;font-family:'DM Sans',sans-serif;font-size:13px;
+  padding:12px 16px;border:1.5px solid var(--border);border-radius:12px;
+  background:var(--input-bg);color:var(--text);outline:none;transition:border-color .2s;
+}
+.fg-inp:focus{border-color:var(--rose);}
+.fg-inp::placeholder{color:var(--muted);font-size:12px;}
+
+/* Phone row */
+.phone-row{display:flex;gap:8px;}
+.cc-sel{
+  width:90px;font-family:'DM Sans',sans-serif;font-size:13px;
+  padding:12px 10px;border:1.5px solid var(--border);border-radius:12px;
+  background:var(--input-bg);color:var(--text);outline:none;cursor:pointer;
+}
+
+/* Role toggle */
+.role-row{display:flex;gap:7px;margin-bottom:1.2rem;}
+.rbtn{
+  flex:1;padding:10px 8px;border:1.5px solid var(--border);border-radius:12px;
+  font-size:12px;cursor:pointer;text-align:center;transition:all .2s;
+  background:var(--surface);color:var(--muted);font-family:'DM Sans',sans-serif;
+}
+.rbtn.active{border-color:var(--rose);background:var(--rosebg);color:var(--rose);font-weight:500;}
+
+/* OTP inputs */
+.otp-row{display:flex;gap:7px;justify-content:center;margin:.7rem 0;}
+.otp-box{
+  width:42px;height:48px;text-align:center;font-size:20px;font-weight:600;
+  border:1.5px solid var(--border);border-radius:10px;outline:none;
+  background:var(--input-bg);color:var(--text);transition:border-color .2s;
+  font-family:'DM Sans',sans-serif;
+}
+.otp-box:focus{border-color:var(--rose);}
+
+/* Buttons */
+.sub-btn{
+  width:100%;padding:13px;border-radius:100px;background:var(--rose);
+  color:white;font-size:14px;font-weight:500;border:none;cursor:pointer;
+  margin-top:.8rem;font-family:'DM Sans',sans-serif;transition:all .2s;
+}
+.sub-btn:hover{filter:brightness(.9);transform:translateY(-1px);}
+.sub-btn:disabled{opacity:.6;transform:none;}
+.google-btn{
+  width:100%;display:flex;align-items:center;justify-content:center;gap:10px;
+  padding:12px;border:1.5px solid var(--border);border-radius:12px;
+  background:var(--surface);font-size:13px;cursor:pointer;color:var(--text);
+  font-family:'DM Sans',sans-serif;transition:all .2s;
+}
+.google-btn:hover{border-color:var(--rose);background:var(--rosebg);}
+.or-div{
+  text-align:center;font-family:'Caveat',cursive;font-size:15px;
+  color:var(--muted);margin:.8rem 0;position:relative;
+}
+.or-div::before,.or-div::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:var(--border);}
+.or-div::before{left:0;}.or-div::after{right:0;}
+.fn{font-size:12px;color:var(--muted);text-align:center;margin-top:.7rem;}
+.fn a{color:var(--rose);cursor:pointer;}
+.demo-tip{font-size:11px;color:var(--muted);text-align:center;margin-top:.4rem;opacity:.65;}
+
+/* Responsive */
+@media(max-width:800px){
+  .lp-left{display:none;}
+  .lp-right{width:100%;border:none;overflow-y:auto;}
+  html,body{overflow:auto;}
+}
+</style>
+</head>
+<body>
+
+<!-- ── LEFT PANEL ── -->
+<div class="lp-left">
+  <!-- Background art -->
+  <div class="lp-bg-art">
+    <svg width="100%" height="100%" viewBox="0 0 600 800" fill="none" preserveAspectRatio="xMidYMid slice">
+      <!-- Big flowing thread -->
+      <path d="M480 50C510 100 540 70 525 130C510 190 475 175 460 235C445 295 468 325 448 380C428 435 445 480 420 535C395 590 410 640 385 695" stroke="#C2607E" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".35"/>
+      <!-- Needle -->
+      <line x1="496" y1="32" x2="460" y2="108" stroke="#f0ebe3" stroke-width="1.5" stroke-linecap="round" opacity=".3"/>
+      <ellipse cx="499" cy="28" rx="5" ry="9" stroke="#f0ebe3" stroke-width="1.2" fill="none" transform="rotate(-25 499 28)" opacity=".3"/>
+      <!-- Big heart -->
+      <path d="M100 300C100 280 78 280 78 300C78 320 100 332 100 332C100 332 122 320 122 300C122 280 100 280 100 300Z" fill="#C2607E" opacity=".25"/>
+      <!-- Leaves -->
+      <path d="M50 600C70 565 105 578 85 610C73 630 50 635 50 600Z" stroke="#4a8c5c" stroke-width="1.5" fill="#EAF3DE" opacity=".35"/>
+      <line x1="50" y1="600" x2="86" y2="606" stroke="#4a8c5c" stroke-width="1" opacity=".35"/>
+      <path d="M160 650C180 615 215 628 195 660C183 680 160 685 160 650Z" stroke="#4a8c5c" stroke-width="1.2" fill="#EAF3DE" opacity=".25"/>
+      <!-- Stars -->
+      <path d="M300 100L303 113L316 113L306 121L309 134L300 126L291 134L294 121L284 113L297 113Z" stroke="#D4831A" stroke-width="1.2" fill="none" opacity=".3"/>
+      <path d="M80 150L82 158L90 158L84 163L86 171L80 166L74 171L76 163L70 158L78 158Z" stroke="#C2607E" stroke-width="1" fill="none" opacity=".3"/>
+      <!-- Scattered dots -->
+      <circle cx="220" cy="200" r="3" fill="#C2607E" opacity=".3"/>
+      <circle cx="380" cy="450" r="2.5" fill="#C2607E" opacity=".25"/>
+      <circle cx="150" cy="480" r="2" fill="#D4831A" opacity=".3"/>
+      <!-- Button circles -->
+      <circle cx="450" cy="680" r="10" stroke="#f0ebe3" stroke-width="1.2" fill="none" opacity=".2"/>
+      <circle cx="447" cy="677" r="1.5" fill="#f0ebe3" opacity=".3"/>
+      <circle cx="453" cy="677" r="1.5" fill="#f0ebe3" opacity=".3"/>
+      <circle cx="447" cy="683" r="1.5" fill="#f0ebe3" opacity=".3"/>
+      <circle cx="453" cy="683" r="1.5" fill="#f0ebe3" opacity=".3"/>
+      <!-- Wavy decorative lines -->
+      <path d="M0 750C60 738 120 758 180 746C240 734 300 754 360 742C420 730 480 750 540 738C570 732 590 740 600 738" stroke="#C2607E" stroke-width="1.2" fill="none" opacity=".15"/>
+    </svg>
+  </div>
+
+  <div class="lp-content">
+    <div class="lp-brand">Priy<em>araa</em></div>
+    <div class="lp-tagline">~ handmade with heart · made just for u</div>
+    <h2 class="lp-headline">Join 12,000+<br>artisans &amp; <em>buyers</em><br>who get it ✦</h2>
+    <p class="lp-sub">the only place where you discover, customize, and co-create handmade pieces directly with verified indian artisans. no cap, it hits different.</p>
+
+    <div class="lp-creators">
+      <div class="lp-cr"><div class="lcr-av">🧶</div><div><div class="lcr-name">Meera Sharma</div><div class="lcr-craft">Textile & Knit · Jaipur</div></div><div class="lcr-stat">4.9★ · 340 sales</div></div>
+      <div class="lp-cr"><div class="lcr-av">🎨</div><div><div class="lcr-name">Aryan Verma</div><div class="lcr-craft">Portraits & Art · Pune</div></div><div class="lcr-stat">4.8★ · 210 sales</div></div>
+      <div class="lp-cr"><div class="lcr-av">🪡</div><div><div class="lcr-name">Kavya Nair</div><div class="lcr-craft">Macramé · Kochi</div></div><div class="lcr-stat">4.9★ · 186 sales</div></div>
+    </div>
+
+    <div class="lp-gz">
+      <span class="lgz">no cap ✨</span>
+      <span class="lgz">main character era 🦄</span>
+      <span class="lgz">hits different 🌸</span>
+      <span class="lgz">slay fr fr 💕</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── RIGHT PANEL ── -->
+<div class="lp-right">
+  <div class="lr-logo">Priy<em>araa</em> 🌸</div>
+  <div class="lr-hey">~ ur handmade home is waiting bestie</div>
+
+  <!-- Sign in / Join tabs -->
+  <div class="auth-tabs">
+    <div class="auth-tab active" id="t-in" onclick="switchAuth('login')">sign in</div>
+    <div class="auth-tab" id="t-up" onclick="switchAuth('register')">join free ✦</div>
+  </div>
+
+  <!-- ═══ LOGIN ═══ -->
+  <div class="auth-page active" id="ap-login">
+    <div class="method-sel">
+      <div class="msel active" id="m-em" onclick="setMethod('email')">📧 email</div>
+      <div class="msel" id="m-ph" onclick="setMethod('phone')">📱 phone</div>
+    </div>
+
+    <!-- Email -->
+    <div id="lf-email">
+      <div class="fg"><label class="fg-lbl">email</label><input class="fg-inp" id="l-email" type="email" placeholder="ur@email.com"></div>
+      <div class="fg"><label class="fg-lbl">password</label><input class="fg-inp" id="l-pw" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <button class="sub-btn" id="l-btn" onclick="doLogin()">sign in to priyaraa →</button>
+    </div>
+
+    <!-- Phone -->
+    <div id="lf-phone" style="display:none;">
+      <div class="fg">
+        <label class="fg-lbl">mobile number</label>
+        <div class="phone-row">
+          <select class="cc-sel" id="p-code"><option>🇮🇳 +91</option><option>🇺🇸 +1</option><option>🇬🇧 +44</option><option>🇦🇺 +61</option></select>
+          <input class="fg-inp" id="l-phone" type="tel" placeholder="98765 43210" style="flex:1;">
+        </div>
+      </div>
+      <button class="sub-btn" id="otp-send" onclick="sendOTP()">send OTP →</button>
+      <div id="otp-wrap" style="display:none;margin-top:1rem;">
+        <div class="fg-lbl" style="text-align:center;margin-bottom:.5rem;">enter the 6-digit OTP ✦</div>
+        <div class="otp-row">
+          <input class="otp-box" id="o1" maxlength="1" oninput="otpNext(this,'o2')">
+          <input class="otp-box" id="o2" maxlength="1" oninput="otpNext(this,'o3')">
+          <input class="otp-box" id="o3" maxlength="1" oninput="otpNext(this,'o4')">
+          <input class="otp-box" id="o4" maxlength="1" oninput="otpNext(this,'o5')">
+          <input class="otp-box" id="o5" maxlength="1" oninput="otpNext(this,'o6')">
+          <input class="otp-box" id="o6" maxlength="1" oninput="if(this.value)verifyOTP()">
+        </div>
+        <button class="sub-btn" onclick="verifyOTP()">verify & enter →</button>
+      </div>
+    </div>
+
+    <div class="or-div">or</div>
+    <button class="google-btn" onclick="doGoogle()">
+      <svg width="17" height="17" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      continue with Google
+    </button>
+    <div class="demo-tip">demo: meera@priyara.com / password123 🌸</div>
+    <div class="fn">no account? <a onclick="switchAuth('register')">join free bestie →</a></div>
+  </div>
+
+  <!-- ═══ REGISTER ═══ -->
+  <div class="auth-page" id="ap-register">
+    <div class="fg-lbl" style="margin-bottom:.5rem;">i want to</div>
+    <div class="role-row">
+      <div class="rbtn active" id="rb-buy" onclick="setRole('buyer')">🛍️ buy handmade</div>
+      <div class="rbtn" id="rb-sell" onclick="setRole('seller')">🧶 sell my craft</div>
+    </div>
+    <div class="fg"><label class="fg-lbl">full name</label><input class="fg-inp" id="r-name" placeholder="Ananya Rao"></div>
+    <div class="fg"><label class="fg-lbl">email</label><input class="fg-inp" id="r-email" type="email" placeholder="ananya@gmail.com"></div>
+    <div class="fg"><label class="fg-lbl">password</label><input class="fg-inp" id="r-pw" type="password" placeholder="create a password"></div>
+    <div class="fg" id="craft-fg" style="display:none;"><label class="fg-lbl">ur craft ✨</label><input class="fg-inp" id="r-craft" placeholder="e.g. Macramé, Portraits, Jewellery..."></div>
+    <button class="sub-btn" id="r-btn" onclick="doRegister()">join priyaraa free 🌸 →</button>
+    <div class="or-div">or</div>
+    <button class="google-btn" onclick="doGoogle()">
+      <svg width="17" height="17" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      sign up with Google
+    </button>
+    <div class="fn">already here? <a onclick="switchAuth('login')">sign in →</a></div>
+  </div>
+</div>
+
+<!-- THEME SWITCHER -->
+<div class="theme-switcher">
+  <div class="theme-palette" id="palette">
+    <div class="palette-opt active" data-theme="light" onclick="setTheme('light')"><div class="palette-dot" style="background:#C2607E;"></div>Rose Light</div>
+    <div class="palette-opt" data-theme="dark" onclick="setTheme('dark')"><div class="palette-dot" style="background:#e8849e;border:2px solid #0f0d0b;"></div>Rose Dark</div>
+    <div class="palette-opt" data-theme="green" onclick="setTheme('green')"><div class="palette-dot" style="background:#4a8c5c;"></div>Sage Light</div>
+    <div class="palette-opt" data-theme="dark-green" onclick="setTheme('dark-green')"><div class="palette-dot" style="background:#6abf80;border:2px solid #080f0a;"></div>Forest Dark</div>
+  </div>
+  <div class="theme-toggle-btn" onclick="togglePalette()">🎨</div>
+</div>
+
+<script src="/api.js"></script>
+<script>
+let role='buyer', otp='';
+
+// ── THEME ──
+function setTheme(t){document.documentElement.setAttribute('data-theme',t);localStorage.setItem('priyaraa_theme',t);document.querySelectorAll('.palette-opt').forEach(o=>o.classList.toggle('active',o.getAttribute('data-theme')===t));}
+function togglePalette(){document.getElementById('palette').classList.toggle('open');}
+document.addEventListener('click',e=>{if(!e.target.closest('.theme-switcher'))document.getElementById('palette')?.classList.remove('open');});
+(function(){const t=localStorage.getItem('priyaraa_theme');if(t)setTheme(t);})();
+
+// ── AUTH TABS ──
+function switchAuth(p){
+  document.querySelectorAll('.auth-page').forEach(x=>x.classList.remove('active'));
+  document.getElementById('ap-'+p).classList.add('active');
+  document.getElementById('t-in').classList.toggle('active',p==='login');
+  document.getElementById('t-up').classList.toggle('active',p==='register');
+}
+
+// ── METHOD ──
+function setMethod(m){
+  document.getElementById('m-em').classList.toggle('active',m==='email');
+  document.getElementById('m-ph').classList.toggle('active',m==='phone');
+  document.getElementById('lf-email').style.display=m==='email'?'block':'none';
+  document.getElementById('lf-phone').style.display=m==='phone'?'block':'none';
+}
+
+// ── ROLE ──
+function setRole(r){
+  role=r;
+  document.getElementById('rb-buy').classList.toggle('active',r==='buyer');
+  document.getElementById('rb-sell').classList.toggle('active',r==='seller');
+  document.getElementById('craft-fg').style.display=r==='seller'?'block':'none';
+}
+
+// ── EMAIL LOGIN ──
+async function doLogin(){
+  const email=document.getElementById('l-email').value.trim();
+  const pw=document.getElementById('l-pw').value;
+  if(!email||!pw){showToast('fill in ur deets bestie 🌸','error');return;}
+  const btn=document.getElementById('l-btn');
+  btn.textContent='signing in...';btn.disabled=true;
+  const res=await PriyaraaAPI.auth.login(email,pw);
+  btn.textContent='sign in to priyaraa →';btn.disabled=false;
+  if(res.success){
+    Auth.save(res.token,res.user);
+    showToast('welcome back '+res.user.name+'! 🌸');
+    setTimeout(()=>window.location.href='/index.html',700);
+  } else showToast(res.message||'not giving bestie... try again','error');
+}
+
+// ── GOOGLE ──
+async function doGoogle(){
+  const name=prompt('ur name ✦','');
+  const email=prompt('ur Gmail 🌸','');
+  if(!name||!email)return;
+  const res=await PriyaraaAPI.auth.googleLogin({name,email,avatar:'🌸'});
+  if(res.success){Auth.save(res.token,res.user);showToast('welcome '+res.user.name+'! no cap ur gonna love it 🌸');setTimeout(()=>window.location.href='/index.html',700);}
+  else showToast(res.message||'something went sideways bestie','error');
+}
+
+// ── PHONE OTP ──
+async function sendOTP(){
+  const phone=document.getElementById('l-phone').value.trim();
+  if(phone.length<10){showToast('valid phone number please 📱','error');return;}
+  const btn=document.getElementById('otp-send');
+  btn.textContent='sending...';btn.disabled=true;
+  await new Promise(r=>setTimeout(r,900));
+  otp=Math.floor(100000+Math.random()*900000).toString();
+  console.log('%c[DEV] OTP: '+otp,'color:#C2607E;font-size:14px;font-weight:bold');
+  document.getElementById('otp-wrap').style.display='block';
+  btn.textContent='resend OTP';btn.disabled=false;
+  showToast('OTP sent! check ur phone 📱 (dev: see console)');
+  document.getElementById('o1').focus();
+}
+function otpNext(cur,nid){if(cur.value.length===1){const n=document.getElementById(nid);if(n)n.focus();}}
+async function verifyOTP(){
+  const entered=[...document.querySelectorAll('.otp-box')].map(i=>i.value).join('');
+  if(entered.length<6)return;
+  if(entered!==otp){showToast('wrong OTP, try again 🌸','error');return;}
+  const phone=document.getElementById('l-phone').value;
+  const res=await PriyaraaAPI.auth.googleLogin({name:'User '+phone.slice(-4),email:`phone_${phone}@priyaraa.app`,avatar:'📱'});
+  if(res.success){Auth.save(res.token,res.user);showToast('verified! welcome to Priyaraa 🌸');setTimeout(()=>window.location.href='/index.html',700);}
+}
+
+// ── REGISTER ──
+async function doRegister(){
+  const name=document.getElementById('r-name').value.trim();
+  const email=document.getElementById('r-email').value.trim();
+  const pw=document.getElementById('r-pw').value;
+  const craft=document.getElementById('r-craft').value;
+  if(!name||!email||!pw){showToast('fill everything bestie 🌸','error');return;}
+  const btn=document.getElementById('r-btn');
+  btn.textContent='creating ur account...';btn.disabled=true;
+  const res=await PriyaraaAPI.auth.register({name,email,password:pw,role,craft});
+  btn.textContent='join priyaraa free 🌸 →';btn.disabled=false;
+  if(res.success){Auth.save(res.token,res.user);showToast('YESSS welcome to Priyaraa! slay bestie 🌸✨');setTimeout(()=>window.location.href='/index.html',700);}
+  else showToast(res.message||'something went wrong bestie','error');
+}
+
+// Redirect if already logged in
+if(Auth.isLoggedIn())window.location.href='/index.html';
+</script>
+</body>
+</html>

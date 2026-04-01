@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Seller — Priyaraa</title>
+<link rel="stylesheet" href="style.css"/>
+<style>
+.seller-hero{padding:5rem 3rem 3rem;background:var(--warm);border-bottom:1px solid var(--sand);position:relative;overflow:hidden;}
+.sh-doodle{position:absolute;right:0;top:0;width:300px;height:260px;opacity:.12;pointer-events:none;}
+.sh-inner{display:grid;grid-template-columns:auto 1fr auto;gap:2.5rem;align-items:center;position:relative;z-index:1;}
+.sav{width:96px;height:96px;border-radius:50%;background:var(--rosebg);border:3px dashed var(--rose2);display:flex;align-items:center;justify-content:center;font-size:44px;}
+.sinfo{}
+.seller-name{font-family:'Instrument Serif',serif;font-size:clamp(28px,4vw,42px);letter-spacing:-.5px;margin-bottom:4px;}
+.seller-craft{font-family:'Caveat',cursive;font-size:17px;color:var(--muted);margin-bottom:.8rem;display:flex;align-items:center;gap:8px;}
+.verified-badge{font-size:11px;font-weight:600;background:var(--rosebg);color:var(--rose);padding:3px 12px;border-radius:100px;border:1px solid var(--rose2);}
+.seller-bio{font-size:14px;color:var(--muted);line-height:1.75;font-weight:300;max-width:480px;}
+.seller-stats{display:flex;gap:2rem;padding:1.5rem;background:white;border:1px solid var(--sand);border-radius:18px;}
+.sv{text-align:center;}
+.svn{font-family:'Instrument Serif',serif;font-size:26px;color:var(--ink);}
+.svl{font-family:'Caveat',cursive;font-size:12px;color:var(--muted);}
+.sloc{font-family:'Caveat',cursive;font-size:14px;color:var(--muted);margin-top:.5rem;display:flex;align-items:center;gap:5px;}
+.sact{display:flex;gap:8px;flex-direction:column;}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:3rem;}
+.pr{background:white;border:1px solid var(--sand);border-radius:16px;overflow:hidden;text-decoration:none;display:block;transition:transform .2s;}
+.pr:hover{transform:translateY(-4px);}
+.pr-thumb{width:100%;display:flex;align-items:center;justify-content:center;font-size:38px;}
+.pr-body{padding:10px 14px 14px;}
+.pr-tag{font-family:'Caveat',cursive;font-size:12px;color:var(--rose);margin-bottom:3px;}
+.pr-name{font-family:'Instrument Serif',serif;font-size:15px;color:var(--ink);margin-bottom:3px;}
+.pr-price{font-family:'Caveat',cursive;font-size:14px;color:var(--rose);}
+.rv-sec{padding:0 3rem 3rem;}
+.rv{background:white;border:1px solid var(--sand);border-radius:14px;padding:1.2rem 1.5rem;margin-bottom:.8rem;}
+.rv-top{display:flex;align-items:center;gap:10px;margin-bottom:.5rem;}
+.rv-av{width:32px;height:32px;border-radius:50%;background:var(--rosebg);display:flex;align-items:center;justify-content:center;font-size:14px;}
+.rv-name{font-weight:500;font-size:13px;flex:1;}
+.rv-stars{color:#F4B942;font-size:12px;}
+.rv-text{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300;}
+@media(max-width:768px){.sh-inner{grid-template-columns:1fr;}.pgrid{grid-template-columns:1fr 1fr;padding:1.5rem;}.rv-sec{padding:0 1.5rem 2rem;}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Priy<em>araa</em></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Discover</a></li>
+    <li><a href="reels.html">Reels</a></li>
+    <li><a href="giftbot.html">🎁 Sona</a></li>
+    <li><a href="chat.html">Messages</a></li>
+  </ul>
+  <div class="nav-btns" id="nav-btns">
+    <a href="login.html" class="btn btn-outline btn-sm">Login</a>
+    <a href="login.html" class="btn btn-dark btn-sm">Join free</a>
+  </div>
+</nav>
+
+<div class="seller-hero">
+  <svg class="sh-doodle" viewBox="0 0 300 260" fill="none">
+    <path d="M240 20C258 44 272 28 264 56C256 84 234 74 226 102C218 130 234 144 218 162" stroke="#C2607E" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M60 80C70 68 84 73 76 88C71 97 60 99 60 80Z" stroke="#C2607E" stroke-width="1" fill="none"/>
+  </svg>
+  <div class="sh-inner">
+    <div class="sav" id="s-av">🌸</div>
+    <div class="sinfo">
+      <h1 class="seller-name" id="s-name">Loading...</h1>
+      <div class="seller-craft">
+        <span id="s-craft">Craft</span>
+        <span class="verified-badge" id="s-badge">Verified ✓</span>
+      </div>
+      <div class="sloc" id="s-loc">📍 India</div>
+      <p class="seller-bio" id="s-bio">Loading seller information...</p>
+    </div>
+    <div>
+      <div class="seller-stats" id="s-stats">
+        <div class="sv"><div class="svn" id="sv-sales">—</div><div class="svl">orders</div></div>
+        <div class="sv"><div class="svn" id="sv-rating">—</div><div class="svl">rating</div></div>
+        <div class="sv"><div class="svn" id="sv-followers">—</div><div class="svl">followers</div></div>
+      </div>
+      <div class="sact" style="margin-top:12px;">
+        <button class="btn btn-dark" onclick="msgSeller()">💬 Message Meera</button>
+        <button class="btn btn-ghost btn-sm" onclick="window.location.href='reels.html'">🎬 Watch reels</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ddiv"><div class="dl"></div><span style="font-family:'Caveat',cursive;font-size:15px;color:var(--muted);">~ products by this artisan</span><div class="dl"></div></div>
+
+<div class="pgrid" id="pgrid">
+  <a href="product.html?id=1" class="pr"><div class="pr-thumb tb1" style="aspect-ratio:.9;">🧸</div><div class="pr-body"><div class="pr-tag">✦ custom</div><div class="pr-name">Custom Plushie</div><div class="pr-price">~ ₹1,299</div></div></a>
+  <a href="product.html?id=2" class="pr"><div class="pr-thumb tb2" style="aspect-ratio:.85;">🪡</div><div class="pr-body"><div class="pr-tag">✦ handmade</div><div class="pr-name">Macramé Wall Art</div><div class="pr-price">~ ₹1,800</div></div></a>
+  <a href="product.html?id=3" class="pr"><div class="pr-thumb tb3" style="aspect-ratio:.9;">🧵</div><div class="pr-body"><div class="pr-name">Embroidery Hoop</div><div class="pr-price">~ ₹680</div></div></a>
+</div>
+
+<div class="rv-sec">
+  <div class="sec-ey" style="padding:0 0 .5rem;">~ what buyers say</div>
+  <div id="rvlist">
+    <div class="rv"><div class="rv-top"><div class="rv-av">👩</div><div class="rv-name">Ananya R.</div><div class="rv-stars">★★★★★</div></div><div class="rv-text">"She cried when she saw it. The name embroidery is so perfect. Meera understood exactly what I wanted just from the brief." 😭🧸</div></div>
+    <div class="rv"><div class="rv-top"><div class="rv-av">👨</div><div class="rv-name">Rohan D.</div><div class="rv-stars">★★★★★</div></div><div class="rv-text">"Ordered a custom piece for my mom's birthday. The quality exceeded my expectations and it arrived with a handwritten note."</div></div>
+    <div class="rv"><div class="rv-top"><div class="rv-av">👩</div><div class="rv-name">Priya M.</div><div class="rv-stars">★★★★★</div></div><div class="rv-text">"The customization process was so smooth. She kept sending me progress photos and the final result was beyond what I imagined."</div></div>
+  </div>
+</div>
+
+<footer class="footer">
+  <a href="index.html" class="footer-logo">Priy<em>araa</em></a>
+  <ul class="footer-links"><li><a href="index.html">Home</a></li><li><a href="seller.html?id=1">Creators</a></li><li><a href="login.html">Sign up</a></li></ul>
+  <div class="footer-copy">~ handmade with heart</div>
+</footer>
+
+
+<script>
+const id=new URLSearchParams(window.location.search).get('id')||1;
+
+async function load(){
+  const res=await PriyaraaAPI.sellers.get(id);
+  if(!res.success)return;
+  const s=res.seller;
+  document.title=s.name+' — Priyaraa';
+  document.getElementById('s-av').textContent=s.avatar||'🌸';
+  document.getElementById('s-name').textContent=s.name;
+  document.getElementById('s-craft').textContent=s.craft;
+  document.getElementById('s-badge').style.display=s.verified?'inline-block':'none';
+  document.getElementById('s-loc').textContent='📍 '+(s.city||'India')+' · member since '+new Date(s.created_at).getFullYear();
+  document.getElementById('s-bio').textContent=s.bio||'Passionate artisan creating beautiful handmade pieces with love and attention to detail.';
+  document.getElementById('sv-sales').textContent=s.total_sales;
+  document.getElementById('sv-rating').textContent=(s.rating||0).toFixed(1)+'★';
+  document.getElementById('sv-followers').textContent=s.followers>=1000?(s.followers/1000).toFixed(1)+'k':s.followers;
+
+  if(res.products&&res.products.length){
+    const bgs=['tb1','tb2','tb3','tb4','tb5'];
+    const ratios=['.9','.85','.9','.8','.95'];
+    document.getElementById('pgrid').innerHTML=res.products.map((p,i)=>
+      `<a href="product.html?id=${p.id}" class="pr">
+        <div class="pr-thumb ${bgs[i%5]}" style="aspect-ratio:${ratios[i%5]};">${p.emoji||'🎁'}</div>
+        <div class="pr-body">${p.is_customizable?'<div class="pr-tag">✦ custom</div>':''}<div class="pr-name">${p.title}</div><div class="pr-price">~ ₹${p.price.toLocaleString()}</div></div>
+      </a>`).join('');
+  }
+  if(res.reviews&&res.reviews.length){
+    document.getElementById('rvlist').innerHTML=res.reviews.map(r=>
+      `<div class="rv"><div class="rv-top"><div class="rv-av">${r.buyer_avatar||'👤'}</div><div class="rv-name">${r.buyer_name}</div><div class="rv-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div></div><div class="rv-text">"${r.comment||''}"</div></div>`).join('');
+  }
+}
+
+function msgSeller(){
+  if(!Auth.isLoggedIn()){showToast('Please login first','error');setTimeout(()=>window.location.href='login.html',1000);return;}
+  window.location.href='chat.html?userId='+id;
+}
+
+load();updateNav();
+</script>
+
+<!-- THEME SWITCHER -->
+<div class="theme-switcher">
+  <div class="theme-palette" id="palette">
+    <div class="palette-opt active" data-theme="light" onclick="setTheme('light')">
+      <div class="palette-dot" style="background:#C2607E;border:2px solid #FBF7F0;box-shadow:0 0 0 1px #C2607E;"></div>Rose Light
+    </div>
+    <div class="palette-opt" data-theme="dark" onclick="setTheme('dark')">
+      <div class="palette-dot" style="background:#e8849e;border:2px solid #0f0d0b;"></div>Rose Dark
+    </div>
+    <div class="palette-opt" data-theme="green" onclick="setTheme('green')">
+      <div class="palette-dot" style="background:#4a8c5c;border:2px solid #f4faf6;"></div>Sage Light
+    </div>
+    <div class="palette-opt" data-theme="dark-green" onclick="setTheme('dark-green')">
+      <div class="palette-dot" style="background:#6abf80;border:2px solid #080f0a;"></div>Forest Dark
+    </div>
+  </div>
+  <div class="theme-toggle-btn" id="theme-toggle" onclick="togglePalette()">🎨</div>
+</div>
+<script src="/api.js"></script>
+<script>
+
+// ── THEME SWITCHER ──
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme',t);
+  localStorage.setItem('priyaraa_theme',t);
+  document.querySelectorAll('.palette-opt').forEach(o=>o.classList.toggle('active',o.getAttribute('data-theme')===t));
+}
+function togglePalette(){document.getElementById('palette').classList.toggle('open');}
+document.addEventListener('click',e=>{if(!e.target.closest('.theme-switcher'))document.getElementById('palette')?.classList.remove('open');});
+(function(){const t=localStorage.getItem('priyaraa_theme');if(t)setTheme(t);})();
+
+// ── NAV: show logged-in user ──
+(function(){
+  const user=Auth.user();
+  const btns=document.querySelector('.nav-btns');
+  if(btns&&user){
+    btns.innerHTML=`<span style="font-family:'Caveat',cursive;font-size:15px;color:var(--muted);">~ ${user.name.split(' ')[0]}</span>
+      <div style="width:32px;height:32px;border-radius:50%;background:var(--rosebg);border:1.5px solid var(--rose2);display:flex;align-items:center;justify-content:center;font-size:15px;">${user.avatar||'🌸'}</div>
+      <button onclick="Auth.logout()" class="btn btn-ghost btn-sm">logout</button>`;
+  }
+})();
+
+</script>
+</body>
+</html>

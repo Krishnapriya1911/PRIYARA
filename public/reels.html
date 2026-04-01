@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Reels & Moments — Priyara</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ════════════════════════════════
+       PAGE TABS
+    ════════════════════════════════ */
+    .page-tabs {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border-bottom: 1px solid var(--sand);
+      padding: 0 3rem;
+      background: var(--cream);
+      position: sticky; top: 64px; z-index: 100;
+    }
+    .ptab {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px; font-weight: 400;
+      padding: 1rem 1.5rem;
+      border: none; background: none;
+      color: var(--muted); cursor: pointer;
+      border-bottom: 2.5px solid transparent;
+      margin-bottom: -1px;
+      transition: all .15s;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .ptab.active { color: var(--rose); border-bottom-color: var(--rose); font-weight: 500; }
+    .ptab:hover { color: var(--rose); }
+
+    .tab-section { display: none; }
+    .tab-section.active { display: block; }
+
+    /* ════════════════════════════════
+       REELS SECTION
+    ════════════════════════════════ */
+    .reels-page { padding: 2rem 3rem; }
+
+    .reels-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+
+    .reels-filters {
+      display: flex; gap: 6px; flex-wrap: wrap;
+    }
+    .rf {
+      font-family: 'Caveat', cursive;
+      font-size: 14px; padding: 5px 16px;
+      border-radius: 100px;
+      border: 1px solid var(--sand);
+      background: transparent; color: var(--muted);
+      cursor: pointer; transition: all .15s;
+    }
+    .rf.active, .rf:hover { background: var(--rose); color: white; border-color: var(--rose); }
+
+    /* REELS GRID — 4 cols like Pinterest */
+    .reels-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .reel-card {
+      border-radius: 18px;
+      overflow: hidden;
+      background: var(--ink);
+      position: relative;
+      cursor: pointer;
+      transition: transform .2s;
+    }
+    .reel-card:hover { transform: scale(1.02); }
+
+    .reel-card:hover .reel-overlay { opacity: 1; }
+
+    .reel-thumb {
+      width: 100%;
+      aspect-ratio: 9/16;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 52px;
+      position: relative;
+    }
+
+    .reel-overlay {
+      position: absolute; inset: 0;
+      background: rgba(26,18,8,.55);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 8px;
+      opacity: 0; transition: opacity .2s;
+    }
+
+    .play-btn {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: white;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .reel-overlay-text {
+      font-family: 'Caveat', cursive;
+      font-size: 15px; color: white;
+    }
+
+    /* reel badges */
+    .reel-live {
+      position: absolute; top: 10px; left: 10px;
+      background: #E53935; color: white;
+      font-size: 10px; font-weight: 600;
+      padding: 3px 9px; border-radius: 100px;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .live-dot { width: 6px; height: 6px; border-radius: 50%; background: white; animation: blink 1s infinite; }
+    @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+
+    .reel-new {
+      position: absolute; top: 10px; left: 10px;
+      background: var(--rose); color: white;
+      font-size: 10px; font-weight: 600;
+      padding: 3px 9px; border-radius: 100px;
+    }
+
+    /* reel bottom info */
+    .reel-info {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(26,18,8,.85));
+      padding: 1.5rem .9rem .9rem;
+    }
+
+    .reel-seller {
+      display: flex; align-items: center; gap: 6px;
+      margin-bottom: 5px;
+    }
+    .rs-av {
+      width: 26px; height: 26px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; border: 1.5px solid white;
+      flex-shrink: 0;
+    }
+    .rs-name {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px; font-weight: 500; color: white;
+    }
+    .rs-badge {
+      font-size: 9px; background: rgba(255,255,255,.2);
+      color: white; padding: 1px 6px; border-radius: 100px;
+    }
+
+    .reel-caption {
+      font-family: 'Caveat', cursive;
+      font-size: 13px; color: rgba(255,255,255,.85);
+      margin-bottom: 6px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    .reel-stats {
+      display: flex; gap: 10px;
+    }
+    .reel-stat {
+      font-family: 'Caveat', cursive;
+      font-size: 12px; color: rgba(255,255,255,.7);
+      display: flex; align-items: center; gap: 3px;
+    }
+
+    /* ════════════════════════════════
+       BUYER MOMENTS SECTION
+    ════════════════════════════════ */
+    .moments-page { padding: 2rem 3rem; }
+
+    .moments-header {
+      display: flex; align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+
+    .upload-moment-btn {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px; font-weight: 500;
+      padding: 10px 22px; border-radius: 100px;
+      border: none; background: var(--rose); color: white;
+      cursor: pointer; display: flex; align-items: center; gap: 6px;
+      transition: background .2s;
+    }
+    .upload-moment-btn:hover { background: #a84d6a; }
+
+    /* upload modal */
+    .upload-modal-wrap {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(26,18,8,.5);
+      z-index: 500;
+      align-items: center; justify-content: center;
+    }
+    .upload-modal-wrap.open { display: flex; }
+
+    .upload-modal {
+      background: var(--cream);
+      border-radius: 24px;
+      padding: 2rem 2rem 1.8rem;
+      width: 460px;
+      max-width: 95vw;
+      position: relative;
+    }
+
+    .um-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: 24px; color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .um-title em { font-style: italic; color: var(--rose); }
+    .um-sub {
+      font-family: 'Caveat', cursive;
+      font-size: 14px; color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .upload-zone {
+      border: 2px dashed var(--sand);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all .15s;
+      margin-bottom: 1rem;
+      background: var(--warm);
+    }
+    .upload-zone:hover { border-color: var(--rose); background: var(--rosebg); }
+    .uz-icon { font-size: 32px; margin-bottom: .5rem; }
+    .uz-text { font-family: 'Caveat', cursive; font-size: 16px; color: var(--muted); }
+    .uz-sub { font-size: 11px; color: #c0b0a0; margin-top: 3px; }
+
+    .um-field { margin-bottom: 12px; }
+    .um-label {
+      font-size: 10px; font-weight: 500; color: var(--muted);
+      display: block; margin-bottom: 4px;
+      letter-spacing: .06em; text-transform: uppercase;
+    }
+    .um-input {
+      width: 100%; font-family: 'DM Sans', sans-serif;
+      font-size: 13px; font-weight: 300;
+      padding: 10px 13px;
+      border: 1px solid var(--sand); border-radius: 11px;
+      background: white; color: var(--ink); outline: none;
+      transition: border-color .15s;
+    }
+    .um-input:focus { border-color: var(--rose); }
+    .um-input::placeholder { color: #c0b0a0; font-size: 12px; }
+
+    .um-row { display: flex; gap: 8px; margin-top: .8rem; }
+    .um-cancel {
+      flex: 1; font-family: 'DM Sans', sans-serif;
+      font-size: 13px; padding: 11px;
+      border-radius: 100px; border: 1.5px solid var(--sand);
+      background: transparent; color: var(--muted); cursor: pointer;
+    }
+    .um-submit {
+      flex: 2; font-family: 'DM Sans', sans-serif;
+      font-size: 13px; font-weight: 500; padding: 11px;
+      border-radius: 100px; border: none;
+      background: var(--ink); color: var(--cream); cursor: pointer;
+      transition: background .2s;
+    }
+    .um-submit:hover { background: var(--rose); }
+
+    /* moments masonry grid */
+    .moments-grid {
+      columns: 4; gap: 12px;
+    }
+
+    .moment-card {
+      break-inside: avoid;
+      margin-bottom: 12px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: white;
+      border: 1px solid var(--sand);
+      position: relative;
+    }
+
+    .moment-thumb {
+      width: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 40px; position: relative;
+    }
+
+    .moment-type {
+      position: absolute; top: 8px; right: 8px;
+      font-size: 9px; font-weight: 600;
+      padding: 3px 8px; border-radius: 100px;
+    }
+    .mt-reel { background: var(--ink); color: white; }
+    .mt-photo { background: white; color: var(--ink); border: 1px solid var(--sand); }
+
+    .moment-body { padding: 10px 12px 12px; }
+
+    .moment-user {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 6px;
+    }
+    .mu-av {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; border: 1.5px dashed var(--sand);
+      flex-shrink: 0;
+    }
+    .mu-name {
+      font-family: 'Instrument Serif', serif;
+      font-size: 13px; color: var(--ink);
+    }
+    .mu-date {
+      font-family: 'Caveat', cursive;
+      font-size: 11px; color: var(--muted);
+      margin-left: auto;
+    }
+
+    .moment-caption {
+      font-family: 'Caveat', cursive;
+      font-size: 14px; color: var(--muted);
+      line-height: 1.5; margin-bottom: 6px;
+    }
+
+    .moment-product {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--warm);
+      border-radius: 8px; padding: 5px 8px;
+      margin-bottom: 8px;
+    }
+    .mp-thumb {
+      width: 24px; height: 24px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px;
+    }
+    .mp-name {
+      font-size: 10px; color: var(--muted);
+      font-weight: 300;
+    }
+    .mp-name a { color: var(--rose); text-decoration: none; }
+
+    .moment-actions {
+      display: flex; gap: 12px;
+    }
+    .ma {
+      font-family: 'Caveat', cursive;
+      font-size: 13px; color: var(--muted);
+      cursor: pointer; display: flex; align-items: center; gap: 4px;
+      transition: color .15s;
+    }
+    .ma:hover { color: var(--rose); }
+    .ma.liked { color: var(--rose); }
+
+    /* ════════════════════════════════
+       SONA AVATAR CUSTOMIZER
+    ════════════════════════════════ */
+    .sona-page { padding: 2rem 3rem; }
+
+    .sona-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    /* PREVIEW */
+    .sona-preview {
+      background: var(--rosebg);
+      border-radius: 24px;
+      padding: 3rem 2rem;
+      text-align: center;
+      border: 1px solid var(--sand);
+      position: sticky; top: 130px;
+    }
+
+    .avatar-display {
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      margin: 0 auto 1.2rem;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 72px;
+      border: 4px solid white;
+      position: relative;
+      transition: all .3s;
+    }
+
+    .avatar-online {
+      position: absolute; bottom: 8px; right: 8px;
+      width: 22px; height: 22px;
+      border-radius: 50%; background: #4CAF50;
+      border: 3px solid white;
+    }
+
+    .avatar-name {
+      font-family: 'Instrument Serif', serif;
+      font-size: 28px; color: var(--ink);
+      letter-spacing: -.5px; margin-bottom: 4px;
+    }
+    .avatar-name em { font-style: italic; color: var(--rose); }
+
+    .avatar-role {
+      font-family: 'Caveat', cursive;
+      font-size: 15px; color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .avatar-greeting {
+      background: white;
+      border: 1px solid var(--sand);
+      border-radius: 16px;
+      padding: .9rem 1.2rem;
+      font-family: 'Caveat', cursive;
+      font-size: 15px; color: var(--muted);
+      line-height: 1.6;
+      text-align: left;
+      position: relative;
+    }
+    .avatar-greeting::before {
+      content: '';
+      position: absolute; top: -8px; left: 24px;
+      width: 16px; height: 16px;
+      background: white;
+      border-top: 1px solid var(--sand);
+      border-left: 1px solid var(--sand);
+      transform: rotate(45deg);
+    }
+
+    /* CUSTOMIZER PANEL */
+    .sona-customizer {}
+
+    .cust-section {
+      background: white;
+      border: 1px solid var(--sand);
+      border-radius: 18px;
+      padding: 1.4rem;
+      margin-bottom: 14px;
+    }
+
+    .cs-title {
+      font-family: 'Caveat', cursive;
+      font-size: 16px; color: var(--rose);
+      margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    /* emoji grid */
+    .emoji-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+    }
+
+    .eg-btn {
+      width: 100%; aspect-ratio: 1;
+      border-radius: 12px;
+      border: 2px solid transparent;
+      background: var(--warm);
+      font-size: 24px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .15s;
+    }
+    .eg-btn:hover { border-color: var(--rose2); transform: scale(1.08); }
+    .eg-btn.active { border-color: var(--rose); background: var(--rosebg); }
+
+    /* color swatches */
+    .color-swatches {
+      display: flex; gap: 8px; flex-wrap: wrap;
+    }
+    .cs-dot {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 3px solid transparent;
+      transition: all .15s;
+    }
+    .cs-dot:hover { transform: scale(1.1); }
+    .cs-dot.active { border-color: var(--ink); }
+
+    /* name input */
+    .name-input-wrap {
+      display: flex; gap: 8px;
+    }
+    .ni {
+      flex: 1; font-family: 'DM Sans', sans-serif;
+      font-size: 13px; padding: 10px 14px;
+      border: 1px solid var(--sand); border-radius: 11px;
+      background: var(--warm); color: var(--ink);
+      outline: none; transition: border-color .15s;
+    }
+    .ni:focus { border-color: var(--rose); }
+    .ni-btn {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px; font-weight: 500;
+      padding: 10px 16px; border-radius: 11px;
+      border: none; background: var(--rose); color: white;
+      cursor: pointer;
+    }
+
+    /* personality options */
+    .personality-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .pg-btn {
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1.5px solid var(--sand);
+      background: var(--warm);
+      cursor: pointer;
+      transition: all .15s;
+      text-align: left;
+    }
+    .pg-btn:hover, .pg-btn.active {
+      border-color: var(--rose);
+      background: var(--rosebg);
+    }
+    .pg-title {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px; font-weight: 500; color: var(--ink);
+      margin-bottom: 2px;
+    }
+    .pg-desc {
+      font-family: 'Caveat', cursive;
+      font-size: 12px; color: var(--muted);
+    }
+
+    .save-sona-btn {
+      width: 100%; font-family: 'DM Sans', sans-serif;
+      font-size: 14px; font-weight: 500;
+      padding: 13px; border-radius: 100px;
+      border: none; background: var(--ink); color: var(--cream);
+      cursor: pointer; transition: background .2s; margin-top: 4px;
+    }
+    .save-sona-btn:hover { background: var(--rose); }
+
+    .saved-msg {
+      display: none; text-align: center;
+      font-family: 'Caveat', cursive;
+      font-size: 15px; color: #3B6D11;
+      margin-top: 10px;
+    }
+
+    @media(max-width:900px){
+      .reels-grid { grid-template-columns: repeat(2,1fr); }
+      .moments-grid { columns: 2; }
+      .sona-layout { grid-template-columns: 1fr; }
+      .reels-page,.moments-page,.sona-page { padding: 1.5rem; }
+      .page-tabs { padding: 0 1rem; overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/index.html" class="nav-logo">Priy<em>araa</em></a>
+  <ul class="nav-links">
+    <li><a href="/index.html">Discover</a></li>
+    <li><a href="/seller.html">Creators</a></li>
+    <li><a href="/product.html">Shop</a></li>
+    <li><a href="/chat.html">Messages</a></li>
+    <li><a href="/giftbot.html">🎁 Sona</a></li>
+    <li><a href="/reels.html" style="color:var(--rose);">🎬 Reels</a></li>
+  </ul>
+  <div class="nav-btns">
+    <a href="/login.html" class="btn btn-outline btn-sm">Login</a>
+    <a href="/login.html" class="btn btn-dark btn-sm">Join free</a>
+  </div>
+</nav>
+
+<!-- PAGE TABS -->
+<div class="page-tabs">
+  <button class="ptab active" onclick="switchTab('reels',this)">🎬 Artisan Reels</button>
+  <button class="ptab" onclick="switchTab('moments',this)">✨ Buyer Moments</button>
+  <button class="ptab" onclick="switchTab('sona',this)">🌸 Sona Avatar</button>
+</div>
+
+<!-- ═══════════════════════════════
+     TAB 1 — ARTISAN REELS
+═══════════════════════════════ -->
+<div id="tab-reels" class="tab-section active">
+  <div class="reels-page">
+    <div class="reels-header">
+      <div>
+        <div class="sec-ey">~ artisan reels</div>
+        <div class="sec-ti">Watch them <em>create</em></div>
+      </div>
+      <div class="reels-filters">
+        <button class="rf active">All</button>
+        <button class="rf">Jewellery</button>
+        <button class="rf">Textile</button>
+        <button class="rf">Art</button>
+        <button class="rf">Candles</button>
+        <button class="rf">Pottery</button>
+        <button class="rf">🔴 Live now</button>
+      </div>
+    </div>
+
+    <div class="reels-grid" id="reels-grid">
+
+      <div class="reel-card">
+        <div class="reel-thumb" style="background:linear-gradient(160deg,#3d1a2a,#7a2d4e);">🧸
+          <div class="reel-live"><div class="live-dot"></div>LIVE</div>
+          <div class="reel-overlay">
+            <div class="play-btn"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M5 3L15 9L5 15V3Z" fill="#1a1208"/></svg></div>
+            <div class="reel-overlay-text">Watch now</div>
+          </div>
+        </div>
+        <div class="reel-info">
+          <div class="reel-seller"><div class="rs-av" style="background:#FDE8EF;">🧶</div><span class="rs-name">Meera Sharma</span><span class="rs-badge">Top seller</span></div>
+          <div class="reel-caption">Making baby Aanya's custom plushie 🧸</div>
+          <div class="reel-stats"><span class="reel-stat">❤️ 2.4k</span><span class="reel-stat">💬 148</span><span class="reel-stat">🔗 Share</span></div>
+        </div>
+      </div>
+
+      <div class="reel-card">
+        <div class="reel-thumb" style="background:linear-gradient(160deg,#1a3428,#2d6b50);">🪡
+          <div class="reel-new">New</div>
+          <div class="reel-overlay">
+            <div class="play-btn"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M5 3L15 9L5 15V3Z" fill="#1a1208"/></svg></div>
+            <div class="reel-overlay-text">Watch</div>
+          </div>
+        </div>
+        <div class="reel-info">
+          <div class="reel-seller"><div class="rs-av" style="background:#EAF3DE;">🪡</div><span class="rs-name">Knot & Soul</span><span class="rs-badge">Verified</span></div>
+          <div class="reel-caption">Macramé wall art from start to finish ✨</div>
+          <div class="reel-stats"><span class="reel-stat">❤️ 1.8k</span><span class="reel-stat">💬 96</span><span class="reel-stat">🔗 Share</span></div>
+        </div>
+      </div>
+
+      <div class="reel-card">
+        <div class="reel-thumb" style="background:linear-gradient(160deg,#2a1a3d,#5a2d7a);">💍
+          <div class="reel-overlay">
+            <div class="play-btn"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M5 3L15 9L5 15V3Z" fill="#1a1208"/></svg></div>
+            <div class="reel-overlay-text">Watch</div>
+          </div>
+        </div>
+        <div class="reel-info">
+          <div class="reel-seller"><div class="rs-av" style="background:#E6F1FB;">💍</div><span class="rs-name">Artisana</span><span class="rs-badge">Rising star</span></div>
+          <div class="reel-caption">Engraving "Ananya" on a silver ring 💍</div>
+          <div class="reel-stats"><span class="reel-stat">❤️ 3.1k</span><span class="reel-stat">💬 204</span><span class="reel-stat">🔗 Share</span></div>
+        </div>
+      </div>
+
+      <div class="reel-card">
+        <div class="reel-thumb" style="background:linear-gradient(160deg,#3d2a1a,#7a5a2d);">🕯️
+          <div class="reel-new">New</div>
+          <div class="reel-overlay">
+            <div class="play-btn"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M5 3L15 9L5 15V3Z" fill="#1a1208"/></svg></div>
+            <div class="reel-overlay-text">Watch</div>
+          </div>
+        </div>
+        <div class="reel-info">
+          <div class="reel-seller"><div class="rs-av" style="background:#FAEEDA;">🕯️</div><span class="rs-name">Lumena Lab</span><span class="rs-badge">Top seller</span></div>
+          <div class="reel-caption">Pouring our Diwali soy candle collection 🕯️</div>
+          <div class="reel-stats"><span class="reel-stat">❤️ 4.2k</span><span class="reel-stat">💬 312</span><span class="reel-stat">🔗 Share</span></div>
+        </div>
+      </div>
+
+      <div class="reel-card">
+        <div class="reel-thumb" style="background:linear-gradient(160deg,#1a2a3d,#2d5a7a);">🎨
+          <div class="reel-overlay">
+            <div class="play-btn"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M5 3L15 9L5 15V3Z" fill="#1a1208"/></svg></div>
+            <div class="reel-overlay-text">Watch</div>
+          </div>
+        </div>
+        <div class="reel-info">
+          <div class="reel-seller"><div class="rs-av" style="background:#E6F1FB;">🎨</div><span class="rs-name">Canvas Studio</span><span class="rs-badge">Verified</span></div>
+          <div class="reel-caption">Timelapse: pet portrait commission 🐶</div>
+          <div class="reel-stats"><span class="reel-stat">❤️ 5.6k</span><span class="reel-stat">💬 438</span><span class="reel-stat">🔗 Share</span></div>
+        </div>
+      </div>
+
+      <div class="reel-card">
+        <div class="reel-thumb" style="background:linear-gradient(160deg,#3d1a3a,#7a2d6b);">🌸
+          <div class="reel-live"><div class="live-dot"></div>LIVE</div>
+          <div class="reel-overlay">
+            <div class="play-btn"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M5 3L15 9L5 15V3Z" fill="#1a1208"/></svg></div>
+            <div class="reel-overlay-text">Join live</div>
+          </div>
+        </div>
+        <div class="reel-info">
+          <div class="reel-seller"><div class="rs-av" style="background:#EEEDFE;">🌸</div><span class="rs-name">Bloom Studio</span><span class="rs-badge">New</span></div>
+          <div class="reel-caption">Pressing flowers for your frames live! 🌸</div>
+          <div class="reel-stats"><span class="reel-stat">❤️ 980</span><span class="reel-stat">💬 62</span><span class="reel-stat">🔗 Share</span></div>
+        </div>
+      </div>
+
+      <div class="reel-card">
+        <div class="reel-thumb" style="background:linear-gradient(160deg,#1a3a2a,#2d7a5a);">🏺
+          <div class="reel-overlay">
+            <div class="play-btn"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M5 3L15 9L5 15V3Z" fill="#1a1208"/></svg></div>
+            <div class="reel-overlay-text">Watch</div>
+          </div>
+        </div>
+        <div class="reel-info">
+          <div class="reel-seller"><div class="rs-av" style="background:#EAF3DE;">🏺</div><span class="rs-name">Clay & Co.</span><span class="rs-badge">Verified</span></div>
+          <div class="reel-caption">Throwing a custom ceramic mug on the wheel 🏺</div>
+          <div class="reel-stats"><span class="reel-stat">❤️ 2.9k</span><span class="reel-stat">💬 175</span><span class="reel-stat">🔗 Share</span></div>
+        </div>
+      </div>
+
+      <div class="reel-card">
+        <div class="reel-thumb" style="background:linear-gradient(160deg,#3a2a1a,#6b5a2d);">🧵
+          <div class="reel-new">New</div>
+          <div class="reel-overlay">
+            <div class="play-btn"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M5 3L15 9L5 15V3Z" fill="#1a1208"/></svg></div>
+            <div class="reel-overlay-text">Watch</div>
+          </div>
+        </div>
+        <div class="reel-info">
+          <div class="reel-seller"><div class="rs-av" style="background:#FDE8EF;">🧵</div><span class="rs-name">Thread Tales</span><span class="rs-badge">Rising star</span></div>
+          <div class="reel-caption">Hand-embroidering your names stitch by stitch 🧵</div>
+          <div class="reel-stats"><span class="reel-stat">❤️ 1.6k</span><span class="reel-stat">💬 88</span><span class="reel-stat">🔗 Share</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     TAB 2 — BUYER MOMENTS
+═══════════════════════════════ -->
+<div id="tab-moments" class="tab-section">
+  <div class="moments-page">
+    <div class="moments-header">
+      <div>
+        <div class="sec-ey">~ buyer moments</div>
+        <div class="sec-ti">Real people, real <em>joy</em></div>
+      </div>
+      <button class="upload-moment-btn" onclick="openUpload()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1V13M1 7H13" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+        Share your moment
+      </button>
+    </div>
+
+    <!-- UPLOAD MODAL -->
+    <div class="upload-modal-wrap" id="upload-modal">
+      <div class="upload-modal">
+        <div class="um-title">Share your <em>moment</em> 🌸</div>
+        <div class="um-sub">~ show the world what you received from our artisans</div>
+
+        <div class="upload-zone" onclick="document.getElementById('moment-file').click()">
+          <div class="uz-icon" id="uz-icon">📸</div>
+          <div class="uz-text" id="uz-text">Tap to upload photo or reel</div>
+          <div class="uz-sub">JPG, PNG, MP4 up to 50MB</div>
+          <input type="file" id="moment-file" style="display:none;" accept="image/*,video/*" onchange="previewUpload(this)">
+        </div>
+
+        <div class="um-field">
+          <label class="um-label">Your caption</label>
+          <input class="um-input" id="moment-caption" placeholder="e.g. Finally received my custom plushie — she loves it! 🧸">
+        </div>
+        <div class="um-field">
+          <label class="um-label">Product (optional)</label>
+          <input class="um-input" placeholder="e.g. Custom plushie doll by Meera Sharma">
+        </div>
+        <div class="um-row">
+          <button class="um-cancel" onclick="closeUpload()">Cancel</button>
+          <button class="um-submit" onclick="submitMoment()">Share moment ✨</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="moments-grid" id="moments-grid">
+
+      <div class="moment-card">
+        <div class="moment-thumb tb1" style="aspect-ratio:.85;font-size:48px;"><span>🧸</span>
+          <div class="moment-type mt-photo">Photo</div>
+        </div>
+        <div class="moment-body">
+          <div class="moment-user">
+            <div class="mu-av" style="background:#FDE8EF;">👩</div>
+            <div class="mu-name">Ananya R.</div>
+            <div class="mu-date">2d ago</div>
+          </div>
+          <div class="moment-caption">"She cried when she saw it. The name embroidery is so perfect 😭🧸"</div>
+          <div class="moment-product">
+            <div class="mp-thumb" style="background:#FDE8EF;">🧸</div>
+            <div class="mp-name">Custom plushie · <a href="/seller.html">Meera Sharma</a></div>
+          </div>
+          <div class="moment-actions">
+            <span class="ma" onclick="toggleLike(this)">❤️ 284</span>
+            <span class="ma">💬 18</span>
+            <span class="ma">🔗 Share</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="moment-card">
+        <div class="moment-thumb tb3" style="aspect-ratio:1.1;font-size:48px;"><span>💍</span>
+          <div class="moment-type mt-reel">Reel</div>
+        </div>
+        <div class="moment-body">
+          <div class="moment-user">
+            <div class="mu-av" style="background:#E6F1FB;">👨</div>
+            <div class="mu-name">Rohan D.</div>
+            <div class="mu-date">4d ago</div>
+          </div>
+          <div class="moment-caption">"Proposed with this ring and she said YES 💍✨ So grateful to Artisana!"</div>
+          <div class="moment-product">
+            <div class="mp-thumb" style="background:#E6F1FB;">💍</div>
+            <div class="mp-name">Silver name ring · <a href="/seller.html">Artisana</a></div>
+          </div>
+          <div class="moment-actions">
+            <span class="ma" onclick="toggleLike(this)">❤️ 1.2k</span>
+            <span class="ma">💬 96</span>
+            <span class="ma">🔗 Share</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="moment-card">
+        <div class="moment-thumb tb2" style="aspect-ratio:.75;font-size:48px;"><span>🪢</span>
+          <div class="moment-type mt-photo">Photo</div>
+        </div>
+        <div class="moment-body">
+          <div class="moment-user">
+            <div class="mu-av" style="background:#EAF3DE;">👩</div>
+            <div class="mu-name">Priya S.</div>
+            <div class="mu-date">1w ago</div>
+          </div>
+          <div class="moment-caption">"My living room is completely transformed 🌿 The macramé wall piece is art!"</div>
+          <div class="moment-product">
+            <div class="mp-thumb" style="background:#EAF3DE;">🪢</div>
+            <div class="mp-name">Macramé wall art · <a href="/seller.html">Knot & Soul</a></div>
+          </div>
+          <div class="moment-actions">
+            <span class="ma" onclick="toggleLike(this)">❤️ 562</span>
+            <span class="ma">💬 34</span>
+            <span class="ma">🔗 Share</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="moment-card">
+        <div class="moment-thumb tb4" style="aspect-ratio:1.2;font-size:48px;"><span>🕯️</span>
+          <div class="moment-type mt-reel">Reel</div>
+        </div>
+        <div class="moment-body">
+          <div class="moment-user">
+            <div class="mu-av" style="background:#FAEEDA;">👩</div>
+            <div class="mu-name">Simran K.</div>
+            <div class="mu-date">1w ago</div>
+          </div>
+          <div class="moment-caption">"Gifted this Diwali candle set to my whole family. Everyone asked where I got it!"</div>
+          <div class="moment-product">
+            <div class="mp-thumb" style="background:#FAEEDA;">🕯️</div>
+            <div class="mp-name">Diwali candle set · <a href="/seller.html">Lumena Lab</a></div>
+          </div>
+          <div class="moment-actions">
+            <span class="ma" onclick="toggleLike(this)">❤️ 889</span>
+            <span class="ma">💬 51</span>
+            <span class="ma">🔗 Share</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="moment-card">
+        <div class="moment-thumb tb5" style="aspect-ratio:.9;font-size:48px;"><span>🎨</span>
+          <div class="moment-type mt-photo">Photo</div>
+        </div>
+        <div class="moment-body">
+          <div class="moment-user">
+            <div class="mu-av" style="background:#EEEDFE;">👨</div>
+            <div class="mu-name">Karan M.</div>
+            <div class="mu-date">2w ago</div>
+          </div>
+          <div class="moment-caption">"Gave my mom a portrait of all 4 of us for her birthday. She hasn't stopped crying 😭🎨"</div>
+          <div class="moment-product">
+            <div class="mp-thumb" style="background:#E6F1FB;">🎨</div>
+            <div class="mp-name">Family portrait · <a href="/seller.html">Canvas Studio</a></div>
+          </div>
+          <div class="moment-actions">
+            <span class="ma" onclick="toggleLike(this)">❤️ 2.1k</span>
+            <span class="ma">💬 147</span>
+            <span class="ma">🔗 Share</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="moment-card">
+        <div class="moment-thumb tb6" style="aspect-ratio:1.0;font-size:48px;"><span>🏺</span>
+          <div class="moment-type mt-photo">Photo</div>
+        </div>
+        <div class="moment-body">
+          <div class="moment-user">
+            <div class="mu-av" style="background:#E1F5EE;">👩</div>
+            <div class="mu-name">Nisha T.</div>
+            <div class="mu-date">2w ago</div>
+          </div>
+          <div class="moment-caption">"Morning chai in my handthrown mug hits different 🍵 Thank you Clay & Co.!"</div>
+          <div class="moment-product">
+            <div class="mp-thumb" style="background:#EAF3DE;">🏺</div>
+            <div class="mp-name">Ceramic mug · <a href="/product.html">Clay & Co.</a></div>
+          </div>
+          <div class="moment-actions">
+            <span class="ma" onclick="toggleLike(this)">❤️ 743</span>
+            <span class="ma">💬 45</span>
+            <span class="ma">🔗 Share</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     TAB 3 — SONA AVATAR CUSTOMIZER
+═══════════════════════════════ -->
+<div id="tab-sona" class="tab-section">
+  <div class="sona-page">
+    <div class="sec-ey" style="margin-bottom:4px;">~ your AI gift guide</div>
+    <div class="sec-ti" style="margin-bottom:2rem;">Customize <em>Sona</em></div>
+
+    <div class="sona-layout">
+
+      <!-- PREVIEW -->
+      <div class="sona-preview">
+        <div class="avatar-display" id="avatar-display" style="background:#FDE8EF;">
+          <span id="avatar-emoji">🌸</span>
+          <div class="avatar-online"></div>
+        </div>
+        <div class="avatar-name" id="avatar-name">Son<em>a</em></div>
+        <div class="avatar-role" id="avatar-role">~ your handmade gift guide</div>
+        <div class="avatar-greeting" id="avatar-greeting">
+          Namaste! 🙏 I'm here to help you find the most beautiful handmade gifts. Tell me the occasion and I'll find the perfect one! 🎁
+        </div>
+      </div>
+
+      <!-- CUSTOMIZER -->
+      <div class="sona-customizer">
+
+        <!-- EMOJI / FACE -->
+        <div class="cust-section">
+          <div class="cs-title">✦ choose Sona's look</div>
+          <div class="emoji-grid">
+            <button class="eg-btn active" onclick="setEmoji(this,'🌸')">🌸</button>
+            <button class="eg-btn" onclick="setEmoji(this,'🌺')">🌺</button>
+            <button class="eg-btn" onclick="setEmoji(this,'🌼')">🌼</button>
+            <button class="eg-btn" onclick="setEmoji(this,'⭐')">⭐</button>
+            <button class="eg-btn" onclick="setEmoji(this,'🌙')">🌙</button>
+            <button class="eg-btn" onclick="setEmoji(this,'🦋')">🦋</button>
+            <button class="eg-btn" onclick="setEmoji(this,'🎀')">🎀</button>
+            <button class="eg-btn" onclick="setEmoji(this,'💎')">💎</button>
+            <button class="eg-btn" onclick="setEmoji(this,'🌿')">🌿</button>
+            <button class="eg-btn" onclick="setEmoji(this,'🕊️')">🕊️</button>
+            <button class="eg-btn" onclick="setEmoji(this,'🌈')">🌈</button>
+            <button class="eg-btn" onclick="setEmoji(this,'✨')">✨</button>
+          </div>
+        </div>
+
+        <!-- BACKGROUND COLOR -->
+        <div class="cust-section">
+          <div class="cs-title">✦ avatar background color</div>
+          <div class="color-swatches">
+            <div class="cs-dot active" style="background:#FDE8EF;" onclick="setBg(this,'#FDE8EF')"></div>
+            <div class="cs-dot" style="background:#EAF3DE;" onclick="setBg(this,'#EAF3DE')"></div>
+            <div class="cs-dot" style="background:#E6F1FB;" onclick="setBg(this,'#E6F1FB')"></div>
+            <div class="cs-dot" style="background:#FAEEDA;" onclick="setBg(this,'#FAEEDA')"></div>
+            <div class="cs-dot" style="background:#EEEDFE;" onclick="setBg(this,'#EEEDFE')"></div>
+            <div class="cs-dot" style="background:#E1F5EE;" onclick="setBg(this,'#E1F5EE')"></div>
+            <div class="cs-dot" style="background:#F5EFE3;" onclick="setBg(this,'#F5EFE3')"></div>
+            <div class="cs-dot" style="background:#1a1208;" onclick="setBg(this,'#1a1208')"></div>
+          </div>
+        </div>
+
+        <!-- NAME -->
+        <div class="cust-section">
+          <div class="cs-title">✦ give Sona a custom name</div>
+          <div class="name-input-wrap">
+            <input class="ni" id="sona-name-input" placeholder="e.g. Sakhi, Mahi, Zara, Priya...">
+            <button class="ni-btn" onclick="setName()">Apply</button>
+          </div>
+        </div>
+
+        <!-- PERSONALITY -->
+        <div class="cust-section">
+          <div class="cs-title">✦ Sona's personality</div>
+          <div class="personality-grid">
+            <button class="pg-btn active" onclick="setPersonality(this,'warm')">
+              <div class="pg-title">🤗 Warm & caring</div>
+              <div class="pg-desc">Sweet, helpful, like a best friend</div>
+            </button>
+            <button class="pg-btn" onclick="setPersonality(this,'fun')">
+              <div class="pg-title">🎉 Fun & playful</div>
+              <div class="pg-desc">Cheerful, energetic, full of ideas</div>
+            </button>
+            <button class="pg-btn" onclick="setPersonality(this,'calm')">
+              <div class="pg-title">🍃 Calm & elegant</div>
+              <div class="pg-desc">Soft-spoken, thoughtful, refined</div>
+            </button>
+            <button class="pg-btn" onclick="setPersonality(this,'desi')">
+              <div class="pg-title">🪔 Desi & traditional</div>
+              <div class="pg-desc">Hinglish, festive, rooted in culture</div>
+            </button>
+          </div>
+        </div>
+
+        <button class="save-sona-btn" onclick="saveSona()">Save my Sona ✦</button>
+        <div class="saved-msg" id="saved-msg">✦ Sona has been updated! Go chat with her on the <a href="/giftbot.html" style="color:var(--rose);">Gift Guide page →</a></div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── TAB SWITCHING ──
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.ptab').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── REELS FILTERS ──
+document.querySelectorAll('.rf').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.rf').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+
+// ── MOMENTS ──
+function openUpload() { document.getElementById('upload-modal').classList.add('open'); }
+function closeUpload() { document.getElementById('upload-modal').classList.remove('open'); }
+
+function previewUpload(input) {
+  if (input.files[0]) {
+    document.getElementById('uz-icon').textContent = '✅';
+    document.getElementById('uz-text').textContent = input.files[0].name;
+  }
+}
+
+function submitMoment() {
+  const cap = document.getElementById('moment-caption').value.trim();
+  if (!cap) { alert('Please add a caption!'); return; }
+  closeUpload();
+
+  // add new moment to grid
+  const grid = document.getElementById('moments-grid');
+  const emojis = ['🧸','💍','🕯️','🎨','🪴','🌸','🏺','🪡'];
+  const bgs = ['tb1','tb2','tb3','tb4','tb5','tb6','tb7','tb8'];
+  const ri = Math.floor(Math.random()*emojis.length);
+  const div = document.createElement('div');
+  div.className = 'moment-card';
+  div.style.animation = 'fadeIn .4s ease';
+  div.innerHTML = `
+    <div class="moment-thumb ${bgs[ri]}" style="aspect-ratio:.9;font-size:48px;"><span>${emojis[ri]}</span>
+      <div class="moment-type mt-photo">Photo</div>
+    </div>
+    <div class="moment-body">
+      <div class="moment-user">
+        <div class="mu-av" style="background:var(--rosebg);">😊</div>
+        <div class="mu-name">You</div>
+        <div class="mu-date">Just now</div>
+      </div>
+      <div class="moment-caption">"${cap}"</div>
+      <div class="moment-actions">
+        <span class="ma" onclick="toggleLike(this)">❤️ 0</span>
+        <span class="ma">💬 0</span>
+        <span class="ma">🔗 Share</span>
+      </div>
+    </div>`;
+  grid.insertBefore(div, grid.firstChild);
+  document.getElementById('moment-caption').value = '';
+  document.getElementById('uz-icon').textContent = '📸';
+  document.getElementById('uz-text').textContent = 'Tap to upload photo or reel';
+}
+
+function toggleLike(el) {
+  el.classList.toggle('liked');
+  const num = el.textContent.match(/[\d.]+k?/);
+  if (num) {
+    let n = num[0].includes('k') ? parseFloat(num[0])*1000 : parseInt(num[0]);
+    n = el.classList.contains('liked') ? n+1 : n-1;
+    el.textContent = '❤️ ' + (n >= 1000 ? (n/1000).toFixed(1)+'k' : n);
+  }
+}
+
+// close modal on backdrop click
+document.getElementById('upload-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeUpload();
+});
+
+// ── SONA AVATAR ──
+const personalities = {
+  warm: "Namaste! 🙏 I'm here to help you find the most beautiful handmade gifts. Tell me the occasion and I'll find the perfect one! 🎁",
+  fun:  "Heyy! 🎉 Ready to find THE most amazing handmade gift?! Tell me who it's for and let's go! 🛍️✨",
+  calm: "Hello 🌿 I'm here to guide you to the perfect, meaningful handmade gift. What occasion are you celebrating?",
+  desi: "Arre namaste ji! 🪔 Batao, kiske liye gift dhundh rahe ho? Main bilkul sahi handmade gift suggest karungi! 🎁"
+};
+
+let currentPersonality = 'warm';
+
+function setEmoji(btn, emoji) {
+  document.querySelectorAll('.eg-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('avatar-emoji').textContent = emoji;
+}
+
+function setBg(dot, color) {
+  document.querySelectorAll('.cs-dot').forEach(d => d.classList.remove('active'));
+  dot.classList.add('active');
+  const isDark = color === '#1a1208';
+  document.getElementById('avatar-display').style.background = color;
+  document.getElementById('avatar-emoji').style.filter = isDark ? 'brightness(1.2)' : 'none';
+}
+
+function setName() {
+  const val = document.getElementById('sona-name-input').value.trim();
+  if (!val) return;
+  const nm = document.getElementById('avatar-name');
+  const last = val.slice(-1);
+  const rest = val.slice(0, -1);
+  nm.innerHTML = `${rest}<em>${last}</em>`;
+}
+
+function setPersonality(btn, type) {
+  document.querySelectorAll('.pg-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentPersonality = type;
+  document.getElementById('avatar-greeting').textContent = personalities[type];
+}
+
+function saveSona() {
+  const msg = document.getElementById('saved-msg');
+  msg.style.display = 'block';
+  setTimeout(() => msg.style.display = 'none', 4000);
+}
+</script>
+
+
+
+<script>
+
+document.addEventListener('DOMContentLoaded', async ()=>{
+  // Load real reels
+  try{
+    const res=await PriyaraaAPI.reels.list({limit:12});
+    if(res.success&&res.reels.length){
+      const grid=document.getElementById('reels-grid');
+      if(grid){
+        const bgs=['#3d1a2a','#1a3428','#2a1a3d','#3d2a1a','#1a2a3d','#3d1a3a','#1a3a2a','#3a2a1a','#2a3a1a','#3a1a2a'];
+        const existing=grid.innerHTML;
+        grid.innerHTML=res.reels.map((r,i)=>`
+          <div class="reel-card" onclick="likeReel(${r.id},this)">
+            <div class="reel-thumb" style="background:linear-gradient(160deg,${bgs[i%bgs.length]},${bgs[(i+2)%bgs.length]});">
+              <span style="font-size:36px;">${r.emoji||'🎬'}</span>
+              ${r.is_live?'<div class="reel-live"><div class="live-dot"></div>LIVE</div>':'<div class="reel-new">New</div>'}
+              <div class="reel-overlay"><div class="play-btn"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 3L14 8L4 13V3Z" fill="#1a1208"/></svg></div></div>
+            </div>
+            <div class="reel-info">
+              <div class="reel-seller"><div class="rs-av" style="background:var(--rosebg);">${r.seller_avatar||'🌸'}</div><span class="rs-name">${r.seller_name||'Artisan'}</span>${r.verified?'<span class="rs-badge">✓</span>':''}</div>
+              <div class="reel-caption">${r.caption}</div>
+              <div class="reel-stats"><span id="rl-${r.id}">❤️ ${r.likes>=1000?(r.likes/1000).toFixed(1)+'k':r.likes}</span><span style="margin-left:8px;">💬 ${r.comments}</span></div>
+            </div>
+          </div>`).join('')+existing;
+      }
+    }
+  }catch(e){}
+
+  // Load real moments
+  try{
+    const res=await PriyaraaAPI.moments.list({limit:6});
+    if(res.success&&res.moments.length){
+      const grid=document.getElementById('moments-grid');
+      if(grid){
+        const bgs=['tb1','tb2','tb3','tb4','tb5','tb6'];
+        grid.innerHTML=res.moments.map((m,i)=>`
+          <div class="moment-card">
+            <div class="moment-thumb ${bgs[i%6]}" style="aspect-ratio:.9;display:flex;align-items:center;justify-content:center;font-size:36px;">${m.emoji||'📸'}<div class="moment-type mt-${m.type||'photo'}">${m.type||'Photo'}</div></div>
+            <div class="moment-body">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:.5rem;">
+                <div style="width:28px;height:28px;border-radius:50%;background:var(--rosebg);display:flex;align-items:center;justify-content:center;">${m.user_avatar||'🌸'}</div>
+                <div style="font-size:12px;font-weight:500;">${m.user_name||'Buyer'}</div>
+              </div>
+              <div style="font-size:13px;color:var(--muted);line-height:1.6;">"${m.caption}"</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:.5rem;">❤️ ${m.likes} <span style="cursor:pointer;" onclick="likeMoment(${m.id},this)">Like</span></div>
+            </div>
+          </div>`).join('');
+      }
+    }
+  }catch(e){}
+  
+  const user=Auth.user();const nb=document.querySelector('.nav-btns');
+  if(nb&&user)nb.innerHTML=`<span style="font-family:'Caveat',cursive;font-size:15px;color:var(--muted);">~ ${user.name.split(' ')[0]}</span><button onclick="Auth.logout()" class="btn btn-ghost btn-sm">Logout</button>`;
+});
+
+async function likeReel(id, card){
+  if(!Auth.isLoggedIn()){showToast('Login to like reels','error');return;}
+  await PriyaraaAPI.reels.like(id);
+  const el=document.getElementById('rl-'+id);
+  if(el){const n=parseInt(el.textContent.replace(/[❤️\s,k]/g,''))||0;el.textContent='❤️ '+(n+1);}
+}
+async function likeMoment(id,el){
+  if(!Auth.isLoggedIn()){showToast('Login to like moments','error');return;}
+  const res=await PriyaraaAPI.moments.like(id);
+  if(res.success)showToast(res.liked?'Liked! ❤️':'Unliked');
+}
+
+</script>
+
+<!-- THEME SWITCHER -->
+<div class="theme-switcher">
+  <div class="theme-palette" id="palette">
+    <div class="palette-opt active" data-theme="light" onclick="setTheme('light')">
+      <div class="palette-dot" style="background:#C2607E;border:2px solid #FBF7F0;box-shadow:0 0 0 1px #C2607E;"></div>Rose Light
+    </div>
+    <div class="palette-opt" data-theme="dark" onclick="setTheme('dark')">
+      <div class="palette-dot" style="background:#e8849e;border:2px solid #0f0d0b;"></div>Rose Dark
+    </div>
+    <div class="palette-opt" data-theme="green" onclick="setTheme('green')">
+      <div class="palette-dot" style="background:#4a8c5c;border:2px solid #f4faf6;"></div>Sage Light
+    </div>
+    <div class="palette-opt" data-theme="dark-green" onclick="setTheme('dark-green')">
+      <div class="palette-dot" style="background:#6abf80;border:2px solid #080f0a;"></div>Forest Dark
+    </div>
+  </div>
+  <div class="theme-toggle-btn" id="theme-toggle" onclick="togglePalette()">🎨</div>
+</div>
+<script src="/api.js"></script>
+<script>
+
+// ── THEME SWITCHER ──
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme',t);
+  localStorage.setItem('priyaraa_theme',t);
+  document.querySelectorAll('.palette-opt').forEach(o=>o.classList.toggle('active',o.getAttribute('data-theme')===t));
+}
+function togglePalette(){document.getElementById('palette').classList.toggle('open');}
+document.addEventListener('click',e=>{if(!e.target.closest('.theme-switcher'))document.getElementById('palette')?.classList.remove('open');});
+(function(){const t=localStorage.getItem('priyaraa_theme');if(t)setTheme(t);})();
+
+// ── NAV: show logged-in user ──
+(function(){
+  const user=Auth.user();
+  const btns=document.querySelector('.nav-btns');
+  if(btns&&user){
+    btns.innerHTML=`<span style="font-family:'Caveat',cursive;font-size:15px;color:var(--muted);">~ ${user.name.split(' ')[0]}</span>
+      <div style="width:32px;height:32px;border-radius:50%;background:var(--rosebg);border:1.5px solid var(--rose2);display:flex;align-items:center;justify-content:center;font-size:15px;">${user.avatar||'🌸'}</div>
+      <button onclick="Auth.logout()" class="btn btn-ghost btn-sm">logout</button>`;
+  }
+})();
+
+</script>
+</body>
+</html>
