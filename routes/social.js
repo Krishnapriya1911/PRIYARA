@@ -9,7 +9,15 @@ const storage = multer.diskStorage({
   destination: (req,file,cb) => cb(null, process.env.UPLOAD_DIR||"./uploads"),
   filename:    (req,file,cb) => cb(null, `${Date.now()}-${Math.round(Math.random()*1e6)}${path.extname(file.originalname)}`)
 });
-const upload = multer({ storage, limits:{ fileSize:50*1024*1024 } });
+const fileFilter = (req, file, cb) => {
+  const allowed = ["image/jpeg", "image/png", "image/webp", "image/gif", "video/mp4", "video/webm"];
+  if (allowed.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error("Only images and videos are allowed."), false);
+  }
+};
+const upload = multer({ storage, limits:{ fileSize:50*1024*1024 }, fileFilter });
 
 // ── REELS ──
 router.get("/reels", optionalAuth, async (req, res) => {
