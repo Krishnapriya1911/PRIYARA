@@ -1230,14 +1230,18 @@ async function likeMoment(id,el){
 <script>
 
 // ── THEME SWITCHER ──
-function setTheme(t){
-  document.documentElement.setAttribute('data-theme',t);
-  localStorage.setItem('priyaraa_theme',t);
-  document.querySelectorAll('.palette-opt').forEach(o=>o.classList.toggle('active',o.getAttribute('data-theme')===t));
+function applyTheme(theme){
+  document.documentElement.setAttribute('data-theme',theme);
+  document.querySelectorAll('.palette-opt').forEach(o=>o.classList.toggle('active',o.getAttribute('data-theme')===theme));
+}
+function setTheme(theme){
+  localStorage.setItem('priyaraa_theme',theme);
+  applyTheme(theme);
 }
 function togglePalette(){document.getElementById('palette').classList.toggle('open');}
 document.addEventListener('click',e=>{if(!e.target.closest('.theme-switcher'))document.getElementById('palette')?.classList.remove('open');});
-(function(){const t=localStorage.getItem('priyaraa_theme');if(t)setTheme(t);})();
+window.addEventListener('storage',e=>{if(e.key==='priyaraa_theme'&&e.newValue)applyTheme(e.newValue);});
+(function(){const t=localStorage.getItem('priyaraa_theme');if(t)applyTheme(t);})();
 
 // ── NAV: show logged-in user ──
 (function(){
